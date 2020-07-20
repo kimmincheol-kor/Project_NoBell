@@ -8,4 +8,4 @@ Android App - Java
 <After>
 Web Server - Spring, Java, OracleDB
 Android App - Kotlin
-fuck
+a
