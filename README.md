@@ -1,4 +1,5 @@
-# NoBell - New Restaurant Managing System
+# NoBell - New Restaurant Managing System    
+-식당에서 직원을 호출할때 누르는 벨을 없앤다는 의미의 프로젝트명
 ### 2020-2 KWU - Self Directed Project
 
 > **Team Member**
