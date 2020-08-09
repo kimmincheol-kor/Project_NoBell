@@ -8,12 +8,12 @@
 ***
 
 > Using Skills
-> > Web Server - Node.JS, Express, MySQL
-> > Android App - Java
-> > Web Page - React.js
+> > Web Server - Node.JS, Express, MySQL    
+> > Android App - Java    
+> > Web Page - React.js    
 
 ***
 
-> After Update Version
-> > Web Server - Spring, Java, MongoDB
-> > Android App - Kotlin
+> After Update Version    
+> > Web Server - Spring, Java, MongoDB    
+> > Android App - Kotlin    
