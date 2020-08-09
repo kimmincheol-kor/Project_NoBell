@@ -1,11 +1,19 @@
 # NoBell
-2020-2 KWU - Self Directed Project
+### 2020-2 KWU - Self Directed Project
 
-<Now>
-Web Server - Node.JS, Express, MySQL
-Android App - Java
+> Team Member
+> > 김민철
+> > 
 
-<After>
-Web Server - Spring, Java, OracleDB
-Android App - Kotlin
-a
+***
+
+> Using Skills
+> > Web Server - Node.JS, Express, MySQL
+> > Android App - Java
+> > Web Page - React.js
+
+***
+
+> After Update Version
+> > Web Server - Spring, Java, MongoDB
+> > Android App - Kotlin
