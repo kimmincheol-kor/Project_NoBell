@@ -1,4 +1,4 @@
-# NoBell
+# NoBell - New Restaurant Managing System
 ### 2020-2 KWU - Self Directed Project
 
 > **Team Member**
