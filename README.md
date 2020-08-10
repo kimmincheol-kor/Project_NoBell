@@ -18,3 +18,4 @@
 > **After Update Version**    
 > > Web Server - Spring, Java, MongoDB    
 > > Android App - Kotlin    
+> > Web Page - Vue.js, Angular.js    
