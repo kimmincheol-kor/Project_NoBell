@@ -21,6 +21,7 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
+        android:inputType="textEmailAddress"
         android:hint="아이디를 입력하세요..."
         />
 
@@ -29,6 +30,7 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
+        android:inputType="textPassword"
         android:hint="패스워드를 입력하세요..."
         />
 

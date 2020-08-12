@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.nobell.owner.R;
 
@@ -65,11 +66,10 @@ public class MainActivity extends AppCompatActivity {
                 in_id = et_id.getText().toString();
                 in_pw = et_pwd.getText().toString();
 
-                Log.e("test", in_id + in_pw);
-
                 // Making AsyncTask For Server
                 LoginTask logintask = new LoginTask();
 
+                // Execute LoginTask
                 try {
                     result_login = logintask.execute().get().trim();
                 } catch (Exception e) {
@@ -77,30 +77,37 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 // Check Result of Login
+                // Success
                 if(result_login.equals("success"))
                 {
+                    Toast.makeText(MainActivity.this, "Success to Login", Toast.LENGTH_SHORT).show();
+
                     editor.putBoolean("logined", true);
                     editor.apply();
-
-                    Log.e("test", "2");
 
                     if(cb_autologin.isChecked())
                         save();
                     else
                         clear();
+
+                    // Move
+                    Intent intent;
+                    intent = new Intent(MainActivity.this, OfficeActivity.class); // (현재 액티비티, 이동할 액티비티)
+
+                    startActivity(intent);
                 }
+                // Fail
                 else
                 {
-                    Log.e("test", "3");
-                    return;
+                    if(result_login.equals("fail:500")) {
+                        Toast.makeText(MainActivity.this, "Fail to Login : Input Data is Incorrect", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Toast.makeText(MainActivity.this, "Fail to Login : SERVER ERROR", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
-                Log.e("test", "4");
-                // Move
-                Intent intent;
-                intent = new Intent(MainActivity.this, OfficeActivity.class); // (현재 액티비티, 이동할 액티비티)
 
-                startActivity(intent);
             }
         });
         // End of Siginin Click
@@ -151,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(Void... unused) {
 
             /* 인풋 파라메터값 생성 */
-            String param = "u_id=" + in_id + "&u_pw=" + in_pw + "";
+            String param = "login_email=" + in_id + "&login_pwd=" + in_pw + "";
             try {
                 /* 서버연결 */
                 URL url = new URL("http://18.191.244.197:3000/owner/login");
