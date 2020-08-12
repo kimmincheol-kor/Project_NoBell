@@ -1,9 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".activity.FieldActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_margin="50dp">
+
+        <TextView
+            android:id="@+id/tv_office_restaurant"
+            android:layout_width="300dp"
+            android:layout_height="100dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="등록된 업체가 없습니다."
+            />
+
+        <Button
+            android:id="@+id/btn_office_info"
+            android:layout_width="300dp"
+            android:layout_height="100dp"
+            android:text="주문 관리"
+            />
+
+        <Button
+            android:id="@+id/btn_office_edit"
+            android:layout_width="300dp"
+            android:layout_height="100dp"
+            android:text="테이블 관리"
+            />
+
+        <Button
+            android:id="@+id/btn_office_event"
+            android:layout_width="300dp"
+            android:layout_height="100dp"
+            android:text="예약 관리"
+            />
+
+        <Button
+            android:id="@+id/btn_office_review"
+            android:layout_width="300dp"
+            android:layout_height="100dp"
+            android:text="계산 요청 관리"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="To Office"/>
+
+    </TableLayout>
+</LinearLayout>
