@@ -62,6 +62,42 @@ router.post('/register', function(req, res, next) {
   });
 });
 
+// Login
+router.post('/login', function(req, res, next) {
+  console.log('[Login Request]');
+  console.log('-> Get Email = ', req.body.login_email);
+
+  var login_email = req.body.login_email;
+  var login_pwd = req.body.login_pwd;
+
+  var login_data = [login_email, login_pwd];
+  
+  pool.getConnection(function(err, connection){
+      var sqlForSelectBoard = "select * FROM nobell.owner WHERE owner_email=? AND owner_pwd=?";
+
+      connection.query(sqlForSelectBoard, login_data, function(err, data){
+
+          if(err) {
+              console.log('-> Fail to SELECT : ', err);
+              res.send('fail:505');
+          }
+          else {
+              // Incorrect Email or Password
+              if(data == "") {
+                  console.log('-> Fail to Login !')
+                  res.send('fail:500');
+              }
+
+              // Correct Email and Password
+              else {
+                  console.log('-> Success to Login !')
+                  res.send('success');
+              }
+          }
+      });
+  });
+});
+
 
 
 
