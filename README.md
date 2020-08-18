@@ -11,7 +11,7 @@
 > **Using Skills**
 > > Web Server - Node.JS, Express, MySQL    
 > > Android App - Java    
-> > Web Page - React.js, jQuery    
+> > Web Page - React.js   
 
 ***
 
