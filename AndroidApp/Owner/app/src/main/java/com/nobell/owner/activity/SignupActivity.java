@@ -102,24 +102,24 @@ public class SignupActivity extends AppCompatActivity {
     // AsyncTask For Connect Server
     public class RegisterTask extends AsyncTask<Void, Integer, String> {
 
-        @Override
-        protected String doInBackground(Void... unused) {
+                    @Override
+                    protected String doInBackground(Void... unused) {
 
-            /* 인풋 파라메터값 생성 */
-            String param = "reg_name=" + name + "&reg_email=" + email + "&reg_pwd=" + pwd + "&reg_phone=" + phone + "";
-            try {
-                /* 서버연결 */
-                URL url = new URL("http://18.191.244.197:3000/owner/register");
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                conn.setRequestMethod("POST");
-                conn.setDoInput(true);
-                conn.connect();
+                        /* 인풋 파라메터값 생성 */
+                        String param = "reg_name=" + name + "&reg_email=" + email + "&reg_pwd=" + pwd + "&reg_phone=" + phone + "";
+                        try {
+                            /* 서버연결 */
+                            URL url = new URL("http://3.34.98.16:3000/owner/register");
+                            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                            conn.setRequestMethod("POST");
+                            conn.setDoInput(true);
+                            conn.connect();
 
-                /* 안드로이드 -> 서버 파라메터값 전달 */
-                OutputStream outs = conn.getOutputStream();
-                outs.write(param.getBytes("UTF-8"));
-                outs.flush();
+                            /* 안드로이드 -> 서버 파라메터값 전달 */
+                            OutputStream outs = conn.getOutputStream();
+                            outs.write(param.getBytes("UTF-8"));
+                            outs.flush();
                 outs.close();
 
                 /* 서버 -> 안드로이드 파라메터값 전달 */
