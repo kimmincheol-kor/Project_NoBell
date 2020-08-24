@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.nobell.owner.R;
+import com.nobell.owner.model.HttpConnector;
+import com.nobell.owner.model.UserData;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,14 +36,10 @@ public class MainActivity extends AppCompatActivity {
     private CheckBox cb_autologin;
 
     private String in_id, in_pw;
-    private String loaded_id, loaded_pwd;
     private String result_login;
 
-    private SharedPreferences appData;
-    private SharedPreferences.Editor editor;
-    private boolean loaded_autologin;
-
     public static Context context_main;
+    public static UserData user_data = new UserData();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,15 +64,10 @@ public class MainActivity extends AppCompatActivity {
                 in_id = et_id.getText().toString();
                 in_pw = et_pwd.getText().toString();
 
-                // Making AsyncTask For Server
-                LoginTask logintask = new LoginTask();
+                String param = "login_email=" + in_id + "&login_pwd=" + in_pw + "";
 
-                // Execute LoginTask
-                try {
-                    result_login = logintask.execute().get().trim();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                HttpConnector MainConnector = new HttpConnector();
+                result_login = MainConnector.ConnectServer(param, "/login", "POST");
 
                 // Check Result of Login
                 // Success
@@ -82,13 +75,12 @@ public class MainActivity extends AppCompatActivity {
                 {
                     Toast.makeText(MainActivity.this, "Success to Login", Toast.LENGTH_SHORT).show();
 
-                    editor.putBoolean("logined", true);
-                    editor.apply();
+                    user_data.UserLogined = true;
+                    user_data.UserAuto = cb_autologin.isChecked();
+                    user_data.UserEmail = et_id.getText().toString().trim();
+                    user_data.UserPwd = et_pwd.getText().toString().trim();
 
-                    if(cb_autologin.isChecked())
-                        save();
-                    else
-                        clear();
+                    user_data.save();
 
                     // Move
                     Intent intent;
@@ -117,10 +109,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                // Making Intent
                 Intent intent;
-                intent = new Intent(MainActivity.this, SignupActivity.class); // (현재 액티비티, 이동할 액티비티)
+                intent = new Intent(MainActivity.this, SignupActivity.class);
 
-                // Moving Activity !!
+                // Moving Activity
                 startActivity(intent);
 
             }
@@ -128,105 +121,24 @@ public class MainActivity extends AppCompatActivity {
         // End of Signup Click
 
         // Load SharedPreference : appData
-        appData = getSharedPreferences("appData", MODE_PRIVATE);
-        editor = appData.edit();
-
-        // Reset Logined
-        editor.putBoolean("logined", false);
-        editor.apply();
+        user_data.appData = getSharedPreferences("appData", MODE_PRIVATE);
+        user_data.editor = user_data.appData.edit();
 
         // Load Saved Data
-        load();
+        user_data.load();
 
         // if AutoLogin,
-        if(loaded_autologin)
+        if(user_data.UserAuto)
         {
             // Set Saved Data,
-            et_id.setText(loaded_id);
-            et_pwd.setText(loaded_pwd);
-            cb_autologin.setChecked(true);
+            et_id.setText(user_data.UserEmail);
+            et_pwd.setText(user_data.UserPwd);
+            cb_autologin.setChecked(user_data.UserAuto);
 
             // Auto Click Signin button
             btn_signin.callOnClick();
         }
+        else
+            user_data.clear();
     }
-
-    // AsyncTask For Connect Server
-    public class LoginTask extends AsyncTask<Void, Integer, String> {
-
-        @Override
-        protected String doInBackground(Void... unused) {
-
-            /* 인풋 파라메터값 생성 */
-            String param = "login_email=" + in_id + "&login_pwd=" + in_pw + "";
-            try {
-                /* 서버연결 */
-                URL url = new URL("http://18.191.244.197:3000/owner/login");
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                conn.setRequestMethod("POST");
-                conn.setDoInput(true);
-                conn.connect();
-
-                /* 안드로이드 -> 서버 파라메터값 전달 */
-                OutputStream outs = conn.getOutputStream();
-                outs.write(param.getBytes("UTF-8"));
-                outs.flush();
-                outs.close();
-
-                /* 서버 -> 안드로이드 파라메터값 전달 */
-                InputStream is = null;
-                BufferedReader in = null;
-                String data = "";
-
-                is = conn.getInputStream();
-                in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
-                String line = null;
-                StringBuffer buff = new StringBuffer();
-                while ( ( line = in.readLine() ) != null )
-                {
-                    buff.append(line + "\n");
-                }
-                result_login = buff.toString();
-                data = result_login.trim();
-                Log.e("RECV DATA", data);
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return result_login;
-        }
-
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    // Function For SharedPreference
-    private void save() {
-        // Save User Login Data
-        editor.putBoolean("AutoLogin", cb_autologin.isChecked());
-        editor.putString("ID", et_id.getText().toString().trim());
-        editor.putString("PWD", et_pwd.getText().toString().trim());
-
-        editor.apply();
-    }
-
-    private void load() {
-        // Get Saved Login Data
-        loaded_autologin = appData.getBoolean("AutoLogin", false);
-        loaded_id = appData.getString("ID", "");
-        loaded_pwd = appData.getString("PWD", "");
-    }
-
-    private void clear() {
-        // Clear Saved Login Data
-        editor.putBoolean("AutoLogin", false);
-        editor.putString("ID", "");
-        editor.putString("PWD", "");
-
-        editor.apply();
-    }
-    ///////////////////////////////////////////////////////////////////
 }
