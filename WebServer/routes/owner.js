@@ -7,7 +7,7 @@ var pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
   database: 'nobell',
-  password: 'alscjf45'
+  password: '123456'
   
   
 });
@@ -28,39 +28,28 @@ router.post('/register', function(req, res, next) {
   var reg_phone = req.body.reg_phone;
 
   var check_data = [reg_email, reg_phone];
-  var reg_data = [reg_name, reg_email, reg_pwd, reg_phone];
+  var reg_data = [reg_email, reg_pwd, reg_name, reg_phone];
 
   console.log('[Register Request]');
   console.log('-> Get Data = ', reg_data);
   
   pool.getConnection(function(err, connection){
       
-      var sqlForSelectBoard = "select * FROM nobell.owner WHERE owner_email=? OR owner_phone=?";
-      
-      connection.query(sqlForSelectBoard, check_data, function(err, data){
-          
-          // New Member -> Insert
-          if(data == ""){
-              sqlForInsertBoard = "insert into nobell.owner(owner_name, owner_email, owner_pwd, owner_phone) values(?,?,?,?)";
-              connection.query(sqlForInsertBoard, reg_data, function(err, rows){
-                  if(err) {
-                      console.log('-> Fail to Insert : ', err);
-                      res.send("fail:505");
-                  }
-                  else {
-                      console.log('-> Success to Register ! ');
-                      res.send("success");
-                  }
-              });
-          }
-          
-          // Exist Member : Fail
-          else{
-              console.log('-> Fail to Register : Exist Member');
-              res.send("fail:500");
-          }
+    var sqlForInsertBoard = "insert into nobell.owner_info(owner_email, owner_pwd, owner_name, owner_phone) values(?,?,?,?)";
+    connection.query(sqlForInsertBoard, reg_data, function(err, rows){
+        if(err) {
+            console.log('-> Fail to Insert : ', err);
 
-      });
+            if(err.errno == 1062)
+                res.send("fail:500");
+            else
+                res.send("fail:505");
+        }
+        else {
+            console.log('-> Success to Register ! ');
+            res.send("success");
+        }
+    });
   });
 });
 
@@ -75,7 +64,7 @@ router.post('/login', function(req, res, next) {
   var login_data = [login_email, login_pwd];
   
   pool.getConnection(function(err, connection){
-      var sqlForSelectBoard = "select * FROM nobell.owner WHERE owner_email=? AND owner_pwd=?";
+      var sqlForSelectBoard = "select * FROM nobell.owner_info WHERE owner_email=? AND owner_pwd=?";
 
       connection.query(sqlForSelectBoard, login_data, function(err, data){
 
@@ -100,8 +89,9 @@ router.post('/login', function(req, res, next) {
   });
 });
 
+// Upload Restaurant Data
+router.post('/reg_rs', function(){
 
-
-
+});
 
 module.exports = router;
