@@ -16,7 +16,11 @@ import android.widget.Toast;
 
 import com.nobell.owner.R;
 import com.nobell.owner.model.HttpConnector;
+import com.nobell.owner.model.RestaurantData;
 import com.nobell.owner.model.UserData;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -40,6 +44,11 @@ public class MainActivity extends AppCompatActivity {
 
     public static Context context_main;
     public static UserData user_data = new UserData();
+    public static RestaurantData rs_data = new RestaurantData();
+
+    // Load SharedPreference : appData
+    public static SharedPreferences appData;
+    public static SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,23 +73,36 @@ public class MainActivity extends AppCompatActivity {
                 in_id = et_id.getText().toString();
                 in_pw = et_pwd.getText().toString();
 
-                String param = "login_email=" + in_id + "&login_pwd=" + in_pw + "";
-
+                // Connect Web Server to Login.
                 HttpConnector MainConnector = new HttpConnector();
+                String param = "login_email=" + in_id + "&login_pwd=" + in_pw + "";
                 result_login = MainConnector.ConnectServer(param, "/login", "POST");
+
+                // Parsing JSON
+                try {
+                    JSONObject json_user = new JSONObject(result_login);
+
+                    user_data.UserEmail = json_user.getString("owner_email").toString().trim();
+                    user_data.UserPwd = json_user.getString("owner_pwd").toString().trim();
+                    user_data.UserName = json_user.getString("owner_name").toString().trim();
+                    user_data.UserPhone = json_user.getString("owner_phone").toString().trim();
+                    user_data.UserRsid = json_user.getInt("owner_rs_id");
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
                 // Check Result of Login
                 // Success
-                if(result_login.equals("success"))
+                if(!user_data.UserEmail.equals(""))
                 {
                     Toast.makeText(MainActivity.this, "Success to Login", Toast.LENGTH_SHORT).show();
 
-                    user_data.UserLogined = true;
-                    user_data.UserAuto = cb_autologin.isChecked();
-                    user_data.UserEmail = et_id.getText().toString().trim();
-                    user_data.UserPwd = et_pwd.getText().toString().trim();
-
-                    user_data.save();
+                    editor.putBoolean("AutoLogin", cb_autologin.isChecked());
+                    editor.putBoolean("UserLogined", user_data.UserLogined);
+                    editor.putString("UserEmail", user_data.UserEmail);
+                    editor.putString("UserPwd", user_data.UserPwd);
+                    editor.apply();
 
                     // Move
                     Intent intent;
@@ -120,12 +142,18 @@ public class MainActivity extends AppCompatActivity {
         });
         // End of Signup Click
 
-        // Load SharedPreference : appData
-        user_data.appData = getSharedPreferences("appData", MODE_PRIVATE);
-        user_data.editor = user_data.appData.edit();
+        // Set SharedPreference : user_data
+        appData = getSharedPreferences("appData", MODE_PRIVATE);
+        editor = appData.edit();
 
         // Load Saved Data
-        user_data.load();
+        // Get Saved Login Data
+        user_data.UserAuto = appData.getBoolean("AutoLogin", false);
+        user_data.UserLogined = appData.getBoolean("UserLogined", false);
+        user_data.UserEmail = appData.getString("UserEmail", "");
+        user_data.UserPwd = appData.getString("UserPwd", "");
+
+        Log.e("user : ", user_data.UserAuto.toString());
 
         // if AutoLogin,
         if(user_data.UserAuto)
@@ -138,7 +166,16 @@ public class MainActivity extends AppCompatActivity {
             // Auto Click Signin button
             btn_signin.callOnClick();
         }
-        else
-            user_data.clear();
+        else{
+            // Clear Saved Login Data
+            editor.putBoolean("AutoLogin", false);
+            editor.putBoolean("UserLogined", false);
+            editor.putString("UserEmail", "");
+            editor.putString("UserPwd", "");
+
+            user_data.clear_user();
+
+            editor.apply();
+        }
     }
 }
