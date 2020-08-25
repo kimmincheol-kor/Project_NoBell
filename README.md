@@ -3,8 +3,8 @@
 ### 2020-2 KWU - Self Directed Project
 
 > **Team Member**
-> > 김민철    
-> > 유현근    
+> > 김민철 - Owner App, Node.js Owner Router    
+> > 유현근 - User App, Node.js User Router    
 
 ***
 
