@@ -11,8 +11,11 @@ create table owner_info(
 
 create table restaurant(
 	rs_id INT(11) not null AUTO_INCREMENT,
+    rs_image mediumblob,
     rs_name char(50) not null,
-    rs_intro char(300),
+    rs_phone char(16) not null,
+    rs_address char(100) not null,
+    rs_intro char(100),
     rs_open char(5) not null,
     rs_close char(5) not null,
     rs_owner char(32) not null,
