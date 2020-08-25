@@ -29,7 +29,7 @@ public class HttpConnector {
         // Making AsyncTask For Server
         ConnectTask connecttask = new ConnectTask();
 
-        Log.e("Hi", "connet");
+        Log.e("Hi", "connect");
 
         // Execute LoginTask
         try {
@@ -59,10 +59,12 @@ public class HttpConnector {
                 conn.connect();
 
                 /* 안드로이드 -> 서버 파라메터값 전달 */
-                OutputStream outs = conn.getOutputStream();
-                outs.write(param.getBytes("UTF-8"));
-                outs.flush();
-                outs.close();
+                if(HttpMethod.equals("POST")) {
+                    OutputStream outs = conn.getOutputStream();
+                    outs.write(param.getBytes("UTF-8"));
+                    outs.flush();
+                    outs.close();
+                }
 
                 /* 서버 -> 안드로이드 파라메터값 전달 */
                 InputStream is = null;
