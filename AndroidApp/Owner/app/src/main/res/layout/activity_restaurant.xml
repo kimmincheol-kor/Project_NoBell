@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.office.RestaurantActivity">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="30dp"
+        android:gravity="center_horizontal|center_vertical">
+
+        <TableRow>
+            <ImageButton
+                android:id="@+id/img_rs"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_horizontal|center_vertical"
+                android:src="@mipmap/ic_launcher">
+            </ImageButton>
+        </TableRow>
+
+        <TableRow
+            android:layout_height="50dp">
+
+            <TextView
+                android:layout_width="60dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:text="가게이름"
+                />
+
+            <EditText
+                android:id="@+id/rs_name"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:inputType="textEmailAddress"
+                android:hint="한신포차"
+                android:text=""
+                />
+        </TableRow>
+
+        <TableRow
+            android:layout_height="50dp">
+            <TextView
+                android:layout_width="60dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:text="연락처"
+                />
+
+            <EditText
+                android:id="@+id/rs_phone"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:inputType="phone"
+                android:hint="010-1234-5678"
+                android:text=""
+                />
+        </TableRow>
+
+        <TableRow
+            android:layout_height="50dp">
+            <TextView
+                android:layout_width="60dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:text="주소"
+                />
+
+            <EditText
+                android:id="@+id/rs_address"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:inputType="text"
+                android:hint="경기도 안산시 단원구"
+                android:text=""
+                />
+        </TableRow>
+
+        <TableRow
+            android:layout_height="100dp">
+
+            <TextView
+                android:layout_width="60dp"
+                android:layout_height="100dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:text="한줄소개"
+                />
+
+            <EditText
+                android:id="@+id/rs_intro"
+                android:layout_weight="1"
+                android:layout_height="100dp"
+                android:gravity="center_horizontal|center_vertical"
+                android:inputType="textMultiLine"
+                android:maxLength="50"
+                android:hint="어서오세요"
+                android:text=""
+                />
+        </TableRow>
+
+        <TableRow
+            android:layout_height="50dp">
+
+            <TextView
+                android:layout_width="60dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:text="오픈시간"
+                />
+
+            <EditText
+                android:id="@+id/rs_open"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:inputType="text"
+                android:hint="09:00"
+                android:text=""
+                />
+        </TableRow>
+
+        <TableRow
+            android:layout_height="50dp">
+            <TextView
+                android:layout_width="60dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:text="마감시간"
+                />
+
+            <EditText
+                android:id="@+id/rs_close"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:inputType="text"
+                android:hint="18:00"
+                android:text=""
+                />
+        </TableRow>
+
+
+
+        <TableRow
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp">
+
+            <Button
+                android:id="@+id/btn_rs"
+                android:layout_weight="1"
+                android:text="등록하기"/>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_height="50dp">
+
+            <Button
+                android:id="@+id/btn_menu"
+                android:layout_weight="1"
+                android:text="메뉴 수정"/>
+
+            <Button
+                android:id="@+id/btn_table"
+                android:layout_weight="1"
+                android:text="테이블 수정"/>
+
+        </TableRow>
+
+    </TableLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
