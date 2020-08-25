@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent;
                     intent = new Intent(MainActivity.this, OfficeActivity.class); // (현재 액티비티, 이동할 액티비티)
 
+                    finish();
                     startActivity(intent);
                 }
                 // Fail
@@ -136,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(MainActivity.this, SignupActivity.class);
 
                 // Moving Activity
+                finish();
                 startActivity(intent);
 
             }

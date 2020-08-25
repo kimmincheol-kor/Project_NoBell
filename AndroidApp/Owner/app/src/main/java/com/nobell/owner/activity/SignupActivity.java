@@ -77,6 +77,7 @@ public class SignupActivity extends AppCompatActivity {
                     intent = new Intent(SignupActivity.this, MainActivity.class); // (현재 액티비티, 이동할 액티비티)
 
                     // Moving Activity -> Main
+                    finish();
                     startActivity(intent);
                 }
                 // if Fail To Register.
