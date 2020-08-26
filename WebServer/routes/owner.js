@@ -8,8 +8,6 @@ var pool = mysql.createPool({
   user: 'root',
   database: 'nobell',
   password: '123456'
-  
-  
 });
 
 var router = express.Router();
@@ -19,7 +17,7 @@ router.get('/', function(req, res, next) {
     res.send('success');
 });
 
-// Register
+// SignUp Request
 router.post('/register', function(req, res, next) {
 
   var reg_name = req.body.reg_name;
@@ -53,7 +51,7 @@ router.post('/register', function(req, res, next) {
   });
 });
 
-// Login
+// Login Request
 router.post('/login', function(req, res, next) {
   console.log('[Login Request]');
   console.log('-> Get Email = ', req.body.login_email);
@@ -117,10 +115,37 @@ router.get('/restaurant/:id', function(req, res, next){
   });
 });
 
+// Change Restaurant State
+router.post('/change_rs', function(req, res, next){
+    console.log('[Change Restaurant State Request]');
+    console.log('-> Get Rs_id = ', req.body.rs_id);
+    console.log('-> Get state = ', req.body.state);
+
+    // Change
+    pool.getConnection(function(err, connection){
+        
+        var sqlForInsertBoard = "update nobell.restaurant set rs_state=? WHERE rs_id=?";
+        connection.query(sqlForInsertBoard, [req.body.state ,req.body.rs_id], function(err, rows){
+            if(err) {
+                console.log('-> Fail to Change : ', err);
+    
+                if(err.errno == 1062)
+                    res.send("fail:500");
+                else
+                    res.send("fail:505");
+            }
+            else {
+                console.log('-> Success to Change ! ');
+                res.send("success");
+            }
+        });
+      });
+});
+
 // Update Restaurant Data
 router.post('/restaurant', function(req, res, next){
   console.log('[POST Restaurant Data Request]');
-  console.log('-> Get Rs_name = ', req.body);
+  console.log('-> Get Rs_id = ', req.body.rs_id);
 
   var owner_email = req.body.user_email;
   var rs_id = req.body.rs_id;
@@ -184,5 +209,40 @@ router.post('/restaurant', function(req, res, next){
       });
   } // end of Register
 });
+
+// Edit Owner Information Request
+router.post('/edit_owner', function(req, res, next){
+
+  console.log('[POST Edit Owner Request]');
+  console.log('-> Get owner_email = ', req.body.user_email);
+
+  var owner_email = req.body.user_email;
+  var new_pwd = req.body.password;
+  var new_phone = req.body.phone;
+
+  var datas = [new_phone, new_pwd, owner_email];
+
+  // Update
+  pool.getConnection(function(err, connection){
+    
+    var sqlForInsertBoard = "update nobell.owner_info set owner_phone=?, owner_pwd=? WHERE owner_email=?";
+    connection.query(sqlForInsertBoard, datas, function(err, rows){
+        if(err) {
+            console.log('-> Fail to Update : ', err);
+
+            if(err.errno == 1062)
+                res.send("fail:500");
+            else
+                res.send("fail:505");
+        }
+        else {
+            console.log('-> Success to Update ! ');
+            res.send("success");
+        }
+    });
+  });
+});
+
+
 
 module.exports = router;

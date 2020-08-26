@@ -13,18 +13,30 @@
         android:layout_gravity="center_vertical|center_horizontal"
         android:layout_margin="50dp">
 
-        <TextView
-            android:id="@+id/tv_restaurant"
-            android:layout_width="300dp"
-            android:layout_height="40dp"
-            android:gravity="center_horizontal|center_vertical"
-            android:text="등록된 업체가 없습니다."
-            />
+        <TableRow>
+            <TextView
+                android:id="@+id/tv_restaurant"
+                android:layout_width="250dp"
+                android:layout_height="40dp"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="등록된 업체가 없습니다."
+                />
+
+            <Button
+                android:id="@+id/btn_rs_state"
+                android:layout_weight="1"
+                android:layout_height="40dp"
+                android:background="@color/colorRed"
+                android:visibility="invisible"
+                android:text="CLOSE"
+                />
+        </TableRow>
 
         <Button
             android:id="@+id/btn_owner_info"
             android:layout_width="300dp"
             android:layout_height="100dp"
+            android:background="@color/colorGreen"
             android:text="개인 정보 관리"
             />
 
@@ -32,6 +44,7 @@
             android:id="@+id/btn_manage"
             android:layout_width="300dp"
             android:layout_height="100dp"
+            android:background="@color/colorPurple"
             android:text="업체 정보 관리"
             />
 
@@ -39,6 +52,7 @@
             android:id="@+id/btn_event"
             android:layout_width="300dp"
             android:layout_height="100dp"
+            android:background="@color/colorGreen"
             android:text="이벤트 관리"
             />
 
@@ -46,6 +60,7 @@
             android:id="@+id/btn_review"
             android:layout_width="300dp"
             android:layout_height="100dp"
+            android:background="@color/colorPurple"
             android:text="문의 &amp; 리뷰 관리"
             />
 
@@ -54,6 +69,7 @@
             android:layout_width="300dp"
             android:layout_height="100dp"
             android:text="통계 데이터 관리"
+            android:background="@color/colorGreen"
             />
 
         <Button
