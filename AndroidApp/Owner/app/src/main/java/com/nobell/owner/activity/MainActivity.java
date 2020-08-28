@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // Check Result of Login
                 // Success
-                if(!user_data.UserEmail.equals(""))
+                if(!result_login.equals("fail:500"))
                 {
                     Toast.makeText(MainActivity.this, "Success to Login", Toast.LENGTH_SHORT).show();
 

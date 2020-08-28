@@ -12,4 +12,6 @@ public class RestaurantData {
     public String open;
     public String close;
 
+    public int state = 0;
+
 }

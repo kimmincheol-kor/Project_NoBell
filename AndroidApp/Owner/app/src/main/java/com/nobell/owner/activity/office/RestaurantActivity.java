@@ -12,6 +12,9 @@ import android.widget.ImageButton;
 import com.nobell.owner.R;
 import com.nobell.owner.activity.MainActivity;
 import com.nobell.owner.activity.OfficeActivity;
+import com.nobell.owner.activity.office.restaurant.MenuActivity;
+import com.nobell.owner.activity.office.restaurant.PlusMenuActivity;
+import com.nobell.owner.activity.office.restaurant.TableActivity;
 import com.nobell.owner.model.HttpConnector;
 import com.nobell.owner.model.RestaurantData;
 import com.nobell.owner.model.UserData;
@@ -109,6 +112,15 @@ public class RestaurantActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                if(user_data.UserRsid < 1) return;
+
+                // Making Intent
+                Intent intent;
+                intent = new Intent(RestaurantActivity.this, MenuActivity.class); // (현재 액티비티, 이동할 액티비티)
+
+                // Moving Activity
+                finish();
+                startActivity(intent);
             }
         });
 
@@ -117,6 +129,15 @@ public class RestaurantActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                if(user_data.UserRsid < 1) return;
+
+                // Making Intent
+                Intent intent;
+                intent = new Intent(RestaurantActivity.this, TableActivity.class); // (현재 액티비티, 이동할 액티비티)
+
+                // Moving Activity
+                finish();
+                startActivity(intent);
             }
         });
     }

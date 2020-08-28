@@ -65,6 +65,7 @@ public class SignupActivity extends AppCompatActivity {
                     return;
                 }
 
+                // Request Register New Owner
                 HttpConnector RegisterConnector = new HttpConnector();
                 String param = "reg_name=" + name + "&reg_email=" + email + "&reg_pwd=" + pwd + "&reg_phone=" + phone + "";
                 result_register = RegisterConnector.ConnectServer(param, "/register", "POST");
