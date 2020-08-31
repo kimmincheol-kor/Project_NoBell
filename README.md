@@ -3,19 +3,19 @@
 ### 2020-2 KWU - Self Directed Project
 
 > **Team Member**
-> > 김민철 - Owner App, Node.js Owner Router    
-> > 유현근 - User App, Node.js User Router    
+> > 김민철 - Owner App, Node.js Owner Server    
+> > 유현근 - User App, Node.js User Server    
 
 ***
 
-> **Using Skills**
+> **Current Version**
 > > Web Server - Node.JS, Express, MySQL    
 > > Android App - Java    
 > > Web Page - React.js   
 
 ***
 
-> **After Update Version**    
+> **After Version**    
 > > Web Server - Spring, Java, MongoDB    
 > > Android App - Kotlin    
 > > Web Page - Vue.js, Angular.js    
