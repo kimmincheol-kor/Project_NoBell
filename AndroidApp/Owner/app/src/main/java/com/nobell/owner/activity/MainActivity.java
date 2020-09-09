@@ -73,6 +73,10 @@ public class MainActivity extends AppCompatActivity {
                 in_id = et_id.getText().toString();
                 in_pw = et_pwd.getText().toString();
 
+                // if Empty Text
+                if(in_id.length() == 0 || in_pw.length() == 0)
+                    return;
+
                 // Connect Web Server to Login.
                 HttpConnector MainConnector = new HttpConnector();
                 String param = "login_email=" + in_id + "&login_pwd=" + in_pw + "";
