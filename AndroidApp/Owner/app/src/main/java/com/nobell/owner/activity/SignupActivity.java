@@ -59,6 +59,12 @@ public class SignupActivity extends AppCompatActivity {
                 re_pwd = reg_check.getText().toString();
                 phone = reg_phone.getText().toString();
 
+                // If Empty Text
+                if(name.length() == 0 || email.length() == 0 || pwd.length() == 0 || phone.length() == 0) {
+                    Toast.makeText(SignupActivity.this, "Please Fill All Blank", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 // If Passwords are Different
                 if (!pwd.equals(re_pwd)) {
                     Toast.makeText(SignupActivity.this, "Two Passwords are Different", Toast.LENGTH_SHORT).show();

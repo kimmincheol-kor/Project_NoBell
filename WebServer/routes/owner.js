@@ -1,5 +1,4 @@
 var express = require('express');
-var mysql = require('mysql');
 
 var mysql = require('mysql');
 var pool = mysql.createPool({
@@ -20,21 +19,23 @@ router.get('/', function(req, res, next) {
 // SignUp Request
 router.post('/register', function(req, res, next) {
 
+  // Get New Owner Data from Request Msg
   var reg_name = req.body.reg_name;
   var reg_email = req.body.reg_email;
   var reg_pwd = req.body.reg_pwd;
   var reg_phone = req.body.reg_phone;
 
-  var check_data = [reg_email, reg_phone];
   var reg_data = [reg_email, reg_pwd, reg_name, reg_phone];
 
   console.log('[Register Request]');
   console.log('-> Get Data = ', reg_data);
-  
+
+  // Connect to DB
   pool.getConnection(function(err, connection){
       
     var sqlForInsertBoard = "insert into nobell.owner_info(owner_email, owner_pwd, owner_name, owner_phone) values(?,?,?,?)";
     connection.query(sqlForInsertBoard, reg_data, function(err, rows){
+        // Fail to INSERT
         if(err) {
             console.log('-> Fail to Insert : ', err);
 
@@ -43,6 +44,7 @@ router.post('/register', function(req, res, next) {
             else
                 res.send("fail:505");
         }
+        // Success to INSERT
         else {
             console.log('-> Success to Register ! ');
             res.send("success");
@@ -252,6 +254,7 @@ router.get('/menu/:id', function(req, res) {
         var sqlForMenu = "select * FROM nobell.menu WHERE menu_rs_id=?";
 
         connection.query(sqlForMenu, req.params.id, function(err, rows){
+            console.log(rows);
             if(err) res.send("fail:500");
             else res.send(rows);
         });
