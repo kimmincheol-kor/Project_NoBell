@@ -15,4 +15,9 @@
         <item name="windowActionBar">false</item>
     </style>
 
+    <style name="EditTheme" parent="Theme.AppCompat.Dialog">
+        <item name="colorAccent">@color/colorPurple</item>
+        <item name="colorControlNormal">@color/colorWhite</item>
+    </style>
+
 </resources>

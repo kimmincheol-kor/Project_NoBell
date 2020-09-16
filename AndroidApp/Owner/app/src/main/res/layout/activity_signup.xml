@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg1_1080_1920"
     tools:context=".activity.SignupActivity">
 
     <TableLayout
@@ -20,14 +21,17 @@
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:text="이름"
+                android:textColor="@color/colorWhite"
                 />
-
             <EditText
+                android:theme="@style/EditTheme"
                 android:id="@+id/reg_name"
                 android:layout_weight="1"
                 android:gravity="center_horizontal|center_vertical"
                 android:inputType="textEmailAddress"
                 android:hint="홍길동"
+                android:textColorHint="@color/colorWhite"
+                android:textColor="@color/colorWhite"
                 android:text=""
                 />
         </TableRow>
@@ -40,14 +44,18 @@
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:text="이메일"
+                android:textColor="@color/colorWhite"
                 />
 
             <EditText
+                android:theme="@style/EditTheme"
                 android:id="@+id/reg_email"
                 android:layout_weight="1"
                 android:gravity="center_horizontal|center_vertical"
                 android:inputType="textEmailAddress"
                 android:hint="example@ex.com"
+                android:textColorHint="@color/colorWhite"
+                android:textColor="@color/colorWhite"
                 android:text=""
                 />
         </TableRow>
@@ -59,14 +67,18 @@
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:text="비밀번호"
+                android:textColor="@color/colorWhite"
                 />
 
             <EditText
+                android:theme="@style/EditTheme"
                 android:id="@+id/reg_pwd"
                 android:layout_weight="1"
                 android:gravity="center_horizontal|center_vertical"
                 android:inputType="numberPassword"
                 android:hint="8~20글자"
+                android:textColorHint="@color/colorWhite"
+                android:textColor="@color/colorWhite"
                 android:text=""
                 />
         </TableRow>
@@ -78,14 +90,18 @@
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:text="비밀번호 확인"
+                android:textColor="@color/colorWhite"
                 />
 
             <EditText
+                android:theme="@style/EditTheme"
                 android:id="@+id/reg_check"
                 android:layout_weight="1"
                 android:gravity="center_horizontal|center_vertical"
                 android:inputType="textPassword"
                 android:hint="재확인"
+                android:textColorHint="@color/colorWhite"
+                android:textColor="@color/colorWhite"
                 android:text=""
                 />
         </TableRow>
@@ -97,28 +113,30 @@
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:text="휴대폰"
+                android:textColor="@color/colorWhite"
                 />
 
             <EditText
+                android:theme="@style/EditTheme"
                 android:id="@+id/reg_phone"
                 android:layout_weight="1"
                 android:gravity="center_horizontal|center_vertical"
                 android:inputType="phone"
                 android:hint="010-1234-5678"
+                android:textColorHint="@color/colorWhite"
+                android:textColor="@color/colorWhite"
                 android:text=""
                 />
         </TableRow>
 
-        <TableRow
-            android:layout_height="50dp"
-            android:layout_marginTop="20dp">
-
             <Button
                 android:id="@+id/btn_register"
-                android:layout_weight="1"
-                android:text="가입하기"/>
+                android:layout_marginTop="50dp"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                android:text="회원가입" />
 
-        </TableRow>
 
     </TableLayout>
 

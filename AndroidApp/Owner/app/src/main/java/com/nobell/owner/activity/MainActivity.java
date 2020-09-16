@@ -141,7 +141,6 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(MainActivity.this, SignupActivity.class);
 
                 // Moving Activity
-                finish();
                 startActivity(intent);
 
             }
