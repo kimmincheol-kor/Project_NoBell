@@ -45,7 +45,7 @@ public class RegisterActivity extends AppCompatActivity {
         et_check = findViewById(R.id.et_check);
         et_phone = findViewById(R.id.et_phone);
 
-        //회원가빙 버튼 클릭시 수행
+        //회원가입 버튼 클릭시 수행
         btn_register = findViewById(R.id.btn_register);
 
 
@@ -81,7 +81,7 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "회원가입에 성공하였습니다", Toast.LENGTH_SHORT).show();
 
                     Intent intent;
-                    intent = new Intent(RegisterActivity.this, MainActivity.class); // (현재 액티비티, 이동할 액티비티)
+                    intent = new Intent(RegisterActivity.this, MainActivity.class);
 
 
                     startActivity(intent);

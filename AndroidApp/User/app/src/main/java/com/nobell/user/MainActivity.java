@@ -2,6 +2,8 @@ package com.nobell.user;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,7 +11,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
+
+import com.nhn.android.naverlogin.OAuthLogin;
+import com.nhn.android.naverlogin.OAuthLoginHandler;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,19 +31,27 @@ public class MainActivity extends AppCompatActivity {
     private EditText et_id;
     private EditText et_pwd;
     private Button btn_login, btn_register;
+    private ImageButton naver_login,naver_logout;
     private String lo_id , lo_pw;
     private String result_login;
+
+    OAuthLogin mOAuthLoginModule;
+    Context mContext;
+
+
     String data_l;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        mContext = getApplicationContext();
         setContentView(R.layout.activity_main);
         et_id = findViewById(R.id.et_id);
         et_pwd = findViewById(R.id.et_pwd);
         btn_login = findViewById(R.id.btn_login);
         btn_register = findViewById(R.id.btn_register);
+        naver_login = findViewById(R.id.naver_login);
+        naver_logout = findViewById(R.id.naver_logout);
 
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +61,58 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        naver_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOAuthLoginModule = OAuthLogin.getInstance();
+                mOAuthLoginModule.init(
+                        mContext
+                        ,getString(R.string.naver_client_id)
+                        ,getString(R.string.naver_client_secret)
+                        ,getString(R.string.naver_client_name)
+                );
+
+                @SuppressLint("HandlerLeak")
+                OAuthLoginHandler mOAuthLoginHandler = new OAuthLoginHandler() {
+                    @Override
+                    public void run(boolean success) {
+                        if (success) {
+                            String accessToken = mOAuthLoginModule.getAccessToken(mContext);
+                            String refreshToken = mOAuthLoginModule.getRefreshToken(mContext);
+                            long expiresAt = mOAuthLoginModule.getExpiresAt(mContext);
+                            String tokenType = mOAuthLoginModule.getTokenType(mContext);
+
+                            Log.i("LoginData","accessToken : "+ accessToken);
+                            Log.i("LoginData","refreshToken : "+ refreshToken);
+                            Log.i("LoginData","expiresAt : "+ expiresAt);
+                            Log.i("LoginData","tokenType : "+ tokenType);
+                            Toast.makeText(MainActivity.this, "로그인에 성공하였습니다", Toast.LENGTH_SHORT).show();
+                            Intent intent;
+                            intent = new Intent(MainActivity.this, RestaurantView.class);
+
+
+                            startActivity(intent);
+
+                        } else {
+                            String errorCode = mOAuthLoginModule
+                                    .getLastErrorCode(mContext).getCode();
+                            String errorDesc = mOAuthLoginModule.getLastErrorDesc(mContext);
+                            Toast.makeText(mContext, "errorCode:" + errorCode
+                                    + ", errorDesc:" + errorDesc, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                };
+
+                mOAuthLoginModule.startOauthLoginActivity(MainActivity.this, mOAuthLoginHandler);
+            }
+        });
+        naver_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOAuthLoginModule.logout(mContext);
+                Toast.makeText(MainActivity.this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,7 +132,10 @@ public class MainActivity extends AppCompatActivity {
 
                 if (data_l.equals("LogOK")) {
                     Toast.makeText(MainActivity.this, "로그인에 성공하였습니다", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(MainActivity.this, ItemList.class);
+                    Intent intent;
+                    intent = new Intent(MainActivity.this, RestaurantView.class);
+
+
                     startActivity(intent);
                 }
                 // Fail
@@ -101,13 +170,13 @@ public class MainActivity extends AppCompatActivity {
                 conn.setDoInput(true);
                 conn.connect();
 
-                /* 안드로이드 -> 서버 파라메터값 전달 */
+
                 OutputStream outs = conn.getOutputStream();
                 outs.write(param.getBytes("UTF-8"));
                 outs.flush();
                 outs.close();
 
-                /* 서버 -> 안드로이드 파라메터값 전달 */
+
                 InputStream is = null;
                 BufferedReader in = null;
 
