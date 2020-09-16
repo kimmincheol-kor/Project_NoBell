@@ -73,6 +73,10 @@ public class MainActivity extends AppCompatActivity {
                 in_id = et_id.getText().toString();
                 in_pw = et_pwd.getText().toString();
 
+                // if Empty Text
+                if(in_id.length() == 0 || in_pw.length() == 0)
+                    return;
+
                 // Connect Web Server to Login.
                 HttpConnector MainConnector = new HttpConnector();
                 String param = "login_email=" + in_id + "&login_pwd=" + in_pw + "";
@@ -94,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // Check Result of Login
                 // Success
-                if(!user_data.UserEmail.equals(""))
+                if(!result_login.equals("fail:500"))
                 {
                     Toast.makeText(MainActivity.this, "Success to Login", Toast.LENGTH_SHORT).show();
 
@@ -137,7 +141,6 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(MainActivity.this, SignupActivity.class);
 
                 // Moving Activity
-                finish();
                 startActivity(intent);
 
             }

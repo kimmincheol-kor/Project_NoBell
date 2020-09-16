@@ -1,5 +1,4 @@
 var express = require('express');
-var mysql = require('mysql');
 
 var mysql = require('mysql');
 var pool = mysql.createPool({
@@ -20,21 +19,23 @@ router.get('/', function(req, res, next) {
 // SignUp Request
 router.post('/register', function(req, res, next) {
 
+  // Get New Owner Data from Request Msg
   var reg_name = req.body.reg_name;
   var reg_email = req.body.reg_email;
   var reg_pwd = req.body.reg_pwd;
   var reg_phone = req.body.reg_phone;
 
-  var check_data = [reg_email, reg_phone];
   var reg_data = [reg_email, reg_pwd, reg_name, reg_phone];
 
   console.log('[Register Request]');
   console.log('-> Get Data = ', reg_data);
-  
+
+  // Connect to DB
   pool.getConnection(function(err, connection){
       
     var sqlForInsertBoard = "insert into nobell.owner_info(owner_email, owner_pwd, owner_name, owner_phone) values(?,?,?,?)";
     connection.query(sqlForInsertBoard, reg_data, function(err, rows){
+        // Fail to INSERT
         if(err) {
             console.log('-> Fail to Insert : ', err);
 
@@ -43,6 +44,7 @@ router.post('/register', function(req, res, next) {
             else
                 res.send("fail:505");
         }
+        // Success to INSERT
         else {
             console.log('-> Success to Register ! ');
             res.send("success");
@@ -56,16 +58,19 @@ router.post('/login', function(req, res, next) {
   console.log('[Login Request]');
   console.log('-> Get Email = ', req.body.login_email);
 
+  // GET Login Data From Request Msg
   var login_email = req.body.login_email;
   var login_pwd = req.body.login_pwd;
 
   var login_data = [login_email, login_pwd];
   
+  // Connect to DB
   pool.getConnection(function(err, connection){
       var sqlForSelectBoard = "select * FROM nobell.owner_info WHERE owner_email=? AND owner_pwd=?";
 
       connection.query(sqlForSelectBoard, login_data, function(err, data){
 
+        // Fail to Connect DB
           if(err) {
               console.log('-> Fail to SELECT : ', err);
               res.send('fail:505');
@@ -243,6 +248,55 @@ router.post('/edit_owner', function(req, res, next){
   });
 });
 
+// Get ALL Menus of Restaurant Request
+router.get('/menu/:id', function(req, res) {
+    console.log('[GET All Menus Request]');
+    console.log('-> Get rs_id = ', req.params.id);
 
+    pool.getConnection(function(err, connection){
+        var sqlForMenu = "select * FROM nobell.menu WHERE menu_rs_id=?";
+
+        connection.query(sqlForMenu, req.params.id, function(err, rows){
+            console.log(rows);
+            if(err) res.send("fail:500");
+            else res.send(rows);
+        });
+    });
+});
+
+// Edit Menu of Restaurant Request
+router.post('/menu', function(req, res, next){
+    console.log('[POST Edit Menu Request]');
+    console.log('-> Get rs_id = ', req.body.rs_id);
+    console.log('-> Get operation = ', req.body.operation);
+
+    var rs_id = req.body.rs_id;
+    var menu_name = req.body.menu_name;
+    var menu_price = req.body.menu_price;
+
+    var operation = req.body.operation;
+
+    // Classify by operation
+    if(operation == "new"){
+        menu_data = [rs_id, menu_name, menu_price];
+        var sqlForMenu = "INSERT INTO nobell.menu values(?,?,?)";
+    }
+    else if(operation == "update"){
+        menu_data = [menu_price, rs_id, menu_name];
+        var sqlForMenu = "UPDATE nobell.menu SET menu_price=? WHERE menu_rs_id=? AND menu_name=?";
+    }
+    else if(operation == "delete"){
+        menu_data = [rs_id, menu_name];
+        var sqlForMenu = "DELETE FROM nobell.menu WHERE menu_rs_id=? AND menu_name=?";
+    }
+    
+    // Connect DB
+    pool.getConnection(function(err, connection){
+        connection.query(sqlForMenu, menu_data, function(err, rows){
+            if(err) res.send("fail:500");
+            else res.send('success');
+        });
+    });
+});
 
 module.exports = router;

@@ -1,60 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/bg1_1080_1920"
+    android:theme="@style/EditTheme"
     tools:context=".activity.MainActivity">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:textSize="40dp"
-        android:gravity="center"
-        android:layout_marginBottom="170dp"
-        android:text="NoBell"
-        />
 
-    <EditText
-        android:id="@+id/et_id"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:inputType="textEmailAddress"
-        android:hint="아이디를 입력하세요..."
-        />
 
-    <EditText
-        android:id="@+id/et_pwd"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:inputType="textPassword"
-        android:hint="패스워드를 입력하세요..."
-        />
+    <ImageView
+        android:layout_width="250dp"
+        android:layout_height="10dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="6"
+        android:src="@drawable/logo_1"/>
 
-    <CheckBox
-        android:id="@+id/cb_autologin"
+    <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:text="자동 로그인"/>
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:layout_weight="1">
 
-    <Button
-        android:id="@+id/btn_signin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:text="로그인"
-        />
+        <EditText
 
-    <Button
-        android:id="@+id/btn_signup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:text="회원가입"
-        />
+            android:id="@+id/et_id"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:inputType="textEmailAddress"
+            android:hint="이메일"
+            android:textColorHint="@color/colorWhite"
+            />
+
+        <EditText
+            android:id="@+id/et_pwd"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:inputType="textPassword"
+            android:hint="패스워드"
+            android:textColorHint="@color/colorWhite"
+            />
+
+        <CheckBox
+            android:id="@+id/cb_autologin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="자동로그인"
+            android:textColor="@color/colorWhite"/>
+
+        <TableRow>
+        <Button
+            android:id="@+id/btn_signin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:text="로그인"
+            />
+
+        <Button
+            android:id="@+id/btn_signup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:text="회원가입"
+            />
+
+
+        </TableRow>
+
+    </TableLayout>
+
 
 </LinearLayout>
