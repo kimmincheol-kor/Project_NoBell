@@ -9,9 +9,9 @@ var logger = require('morgan');
 // ...
 
 // Internal Routers
-var indexRouter = require('./routes/index'); // homepage
-var userRouter = require('./routes/user'); // user app
-var ownerRouter = require('./routes/owner/index'); // owner app
+var indexRouter = require('./routes/index');
+var userRouter = require('./routes/user');
+var ownerRouter = require('./routes/owner/index');
 
 // Main App
 var app = express();
@@ -30,7 +30,7 @@ app.use('/owner', ownerRouter);
 
 // Create HTTP Server Object
 const server = require('http').Server(app);
-const port = process.env.PORT || 3000; // Default = 3030, if Env Var PORT is Existing, then port = PORT)
+const port = process.env.PORT || 3000;
 
 // Start Listening
 server.listen(port, err => {
