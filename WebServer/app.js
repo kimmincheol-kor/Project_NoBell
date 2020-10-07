@@ -10,7 +10,7 @@ var logger = require('morgan');
 
 // Internal Routers
 var indexRouter = require('./routes/index');
-var userRouter = require('./routes/user');
+var customerRouter = require('./routes/customer');
 var ownerRouter = require('./routes/owner/index');
 
 // Main App
@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Routings
 app.use('/', indexRouter);
-app.use('/user', userRouter);
+app.use('/customer', customerRouter);
 app.use('/owner', ownerRouter);
 
 // Create HTTP Server Object
