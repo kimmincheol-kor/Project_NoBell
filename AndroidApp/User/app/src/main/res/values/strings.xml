@@ -1,7 +1,0 @@
-<resources>
-    <string name="app_name">NaverLoginSample</string>
-
-    <string name="naver_client_id">t8FI7fwM5CWWGhmlsYHe</string>
-    <string name="naver_client_secret">rho6KJvHCQ</string>
-    <string name="naver_client_name">No-Bell</string>
-</resources>
