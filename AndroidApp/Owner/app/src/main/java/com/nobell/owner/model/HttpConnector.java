@@ -14,7 +14,7 @@ import java.net.URL;
 
 public class HttpConnector {
 
-    public String HttpIP = "http://192.168.219.102:3000/owner";
+    public String HttpIP = "http://192.168.219.100:3000/owner";
 
     public String HttpParam;
     public String HttpURL;
@@ -28,8 +28,6 @@ public class HttpConnector {
 
         // Making AsyncTask For Server
         ConnectTask connecttask = new ConnectTask();
-
-        Log.e("Hi", "connect");
 
         // Execute LoginTask
         try {

@@ -48,7 +48,7 @@ public class MenuActivity extends AppCompatActivity {
         // 1. get Datas.
         // Connect Web Server to Read Menus. : GET
         HttpConnector MenuConnector = new HttpConnector();
-        String str_menus = MenuConnector.ConnectServer("", "/menu/" + String.valueOf(user_data.UserRsid), "GET");
+        String str_menus = MenuConnector.ConnectServer("", "/menu/read/" + String.valueOf(user_data.UserRsid), "GET");
 
         // Parsing JSON
         try {
@@ -88,7 +88,7 @@ public class MenuActivity extends AppCompatActivity {
                 tv_price.setHeight(60);
                 tv_price.setGravity(Gravity.RIGHT);
                 tv_price.setTextSize(15);
-                tv_price.setText(menuPrice);
+                tv_price.setText(menuPrice + "원");
 
                 view_menus.addView(tv_name);
                 view_menus.addView(tv_price);
@@ -123,8 +123,8 @@ public class MenuActivity extends AppCompatActivity {
                 // Send to Server : Menu Data
                 // Connect Web Server to Insert Menu Data.
                 HttpConnector MenuConnector = new HttpConnector();
-                String param = "rs_id=" + user_data.UserRsid + "&menu_name=" + new_name + "&menu_price=" + new_price + "&operation=new" + "";
-                String result_menu = MenuConnector.ConnectServer(param, "/menu", "POST");
+                String param = "rs_id=" + user_data.UserRsid + "&menu_name=" + new_name + "&menu_price=" + new_price + "&operation=create" + "";
+                String result_menu = MenuConnector.ConnectServer(param, "/menu/update", "POST");
 
                 recreate();
             }
@@ -140,7 +140,7 @@ public class MenuActivity extends AppCompatActivity {
                 // Connect Web Server to Update Menu Data.
                 HttpConnector MenuConnector = new HttpConnector();
                 String param = "rs_id=" + user_data.UserRsid + "&menu_name=" + edit_name + "&menu_price=" + edit_price + "&operation=update" + "";
-                String result_menu = MenuConnector.ConnectServer(param, "/menu", "POST");
+                String result_menu = MenuConnector.ConnectServer(param, "/menu/update", "POST");
 
                 recreate();
             }
@@ -153,7 +153,7 @@ public class MenuActivity extends AppCompatActivity {
                 // Connect Web Server to Delete Menu Data.
                 HttpConnector MenuConnector = new HttpConnector();
                 String param = "rs_id=" + user_data.UserRsid + "&menu_name=" + del_name + "&operation=delete" + "";
-                String result_menu = MenuConnector.ConnectServer(param, "/menu", "POST");
+                String result_menu = MenuConnector.ConnectServer(param, "/menu/update", "POST");
 
                 recreate();
             }

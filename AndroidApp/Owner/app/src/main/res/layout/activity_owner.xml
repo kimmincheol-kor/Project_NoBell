@@ -55,6 +55,24 @@
                 android:layout_width="60dp"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_gravity="center_vertical|center_horizontal"
+                android:text="휴대폰"
+                />
+
+            <TextView
+                android:id="@+id/owner_phone"
+                android:layout_weight="1"
+                android:layout_height="50dp"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="010-1111-1111"
+                />
+        </TableRow>
+
+        <TableRow
+            android:layout_height="50dp">
+            <TextView
+                android:layout_width="60dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_gravity="center_vertical|center_horizontal"
                 android:text="비밀번호"
                 />
 
@@ -62,7 +80,7 @@
                 android:id="@+id/owner_pwd"
                 android:layout_weight="1"
                 android:gravity="center_horizontal|center_vertical"
-                android:inputType="numberPassword"
+                android:inputType="textPassword"
                 android:hint="8~20글자"
                 android:text=""
                 />
@@ -87,24 +105,7 @@
                 />
         </TableRow>
 
-        <TableRow
-            android:layout_height="50dp">
-            <TextView
-                android:layout_width="60dp"
-                android:gravity="center_vertical|center_horizontal"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:text="휴대폰"
-                />
 
-            <EditText
-                android:id="@+id/owner_phone"
-                android:layout_weight="1"
-                android:gravity="center_horizontal|center_vertical"
-                android:inputType="phone"
-                android:hint="010-1234-5678"
-                android:text=""
-                />
-        </TableRow>
 
         <TableRow
             android:layout_height="50dp"

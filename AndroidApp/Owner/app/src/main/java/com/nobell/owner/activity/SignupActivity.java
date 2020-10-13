@@ -74,10 +74,10 @@ public class SignupActivity extends AppCompatActivity {
                 // Request Register New Owner
                 HttpConnector RegisterConnector = new HttpConnector();
                 String param = "reg_name=" + name + "&reg_email=" + email + "&reg_pwd=" + pwd + "&reg_phone=" + phone + "";
-                result_register = RegisterConnector.ConnectServer(param, "/register", "POST");
+                result_register = RegisterConnector.ConnectServer(param, "/signup", "POST");
 
                 // if Success To Register.
-                if (result_register.equals("success")) {
+                if (!result_register.contains("fail")) {
                     Toast.makeText(SignupActivity.this, "Success to Register", Toast.LENGTH_SHORT).show();
 
                     Intent intent;
@@ -89,7 +89,7 @@ public class SignupActivity extends AppCompatActivity {
                 }
                 // if Fail To Register.
                 else {
-                    if (result_register.equals("fail:500")) {
+                    if (result_register.equals("fail:duplicated")) {
                         Toast.makeText(SignupActivity.this, "Fail to Register : Exist Member", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(SignupActivity.this, "Fail to Register : ERROR IN SERVER", Toast.LENGTH_SHORT).show();

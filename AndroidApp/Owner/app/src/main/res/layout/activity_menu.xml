@@ -18,19 +18,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:textSize="30dp"
-                android:background="@drawable/boarder"
-
-                android:text="메뉴"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:gravity="right"
-                android:text="가격"/>
-
         </LinearLayout>
     </ScrollView>
 

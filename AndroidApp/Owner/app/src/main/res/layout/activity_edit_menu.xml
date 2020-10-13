@@ -33,6 +33,7 @@
             android:textColor="#000"
             android:alpha="0.87"
             android:gravity="center"
+            android:text="4번"
             android:background="@color/colorWhite"
             android:layout_marginBottom="3dp"
             android:layout_width="match_parent"
@@ -47,7 +48,7 @@
 
             android:background="@color/colorWhite"
             android:inputType="number"
-            android:hint="메뉴 가격"
+            android:hint="인원 수"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>

@@ -43,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
     private String result_login;
 
     public static Context context_main;
-    public static UserData user_data = new UserData();
-    public static RestaurantData rs_data = new RestaurantData();
+    public static UserData user_data;
+    public static RestaurantData rs_data;
 
     // Load SharedPreference : appData
     public static SharedPreferences appData;
@@ -54,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        user_data = new UserData();
+        rs_data = new RestaurantData();
 
         context_main = this;
 
@@ -80,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                 // Connect Web Server to Login.
                 HttpConnector MainConnector = new HttpConnector();
                 String param = "login_email=" + in_id + "&login_pwd=" + in_pw + "";
-                result_login = MainConnector.ConnectServer(param, "/login", "POST");
+                result_login = MainConnector.ConnectServer(param, "/signin", "POST");
 
                 // Parsing JSON
                 try {
@@ -98,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // Check Result of Login
                 // Success
-                if(!result_login.equals("fail:500"))
+                if(!result_login.contains("fail"))
                 {
                     Toast.makeText(MainActivity.this, "Success to Login", Toast.LENGTH_SHORT).show();
 
@@ -118,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
                 // Fail
                 else
                 {
-                    if(result_login.equals("fail:500")) {
+                    if(result_login.equals("fail:incorrect")) {
                         Toast.makeText(MainActivity.this, "Fail to Login : Input Data is Incorrect", Toast.LENGTH_SHORT).show();
                     }
                     else {

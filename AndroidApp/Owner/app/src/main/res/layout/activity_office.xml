@@ -7,82 +7,102 @@
     android:orientation="vertical"
     tools:context=".activity.OfficeActivity">
 
+    <TextView
+        android:id="@+id/tv_restaurant"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="등록된 업체가 없습니다."
+        android:paddingVertical="20dp"
+        android:textSize="35dp"
+        />
+
+    <Button
+        android:id="@+id/btn_rs_state"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:background="@color/colorRed"
+        android:visibility="invisible"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="70dp"
+        android:text="CLOSE"
+        />
+
     <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
-        android:layout_margin="50dp">
+        android:layout_margin="15dp">
 
         <TableRow>
-            <TextView
-                android:id="@+id/tv_restaurant"
-                android:layout_width="250dp"
-                android:layout_height="40dp"
-                android:gravity="center_horizontal|center_vertical"
-                android:text="등록된 업체가 없습니다."
+
+            <Button
+                android:id="@+id/btn_owner_info"
+                android:layout_height="100dp"
+                android:layout_margin="15dp"
+                android:layout_weight="1"
+                android:background="@color/colorGreen"
+                android:text="개인 정보 관리" />
+
+            <Button
+                android:id="@+id/btn_manage"
+                android:layout_weight="1"
+                android:layout_height="100dp"
+                android:background="@color/colorPurple"
+                android:layout_margin="15dp"
+                android:text="업체 정보 관리"
                 />
 
             <Button
-                android:id="@+id/btn_rs_state"
+                android:id="@+id/btn_event"
                 android:layout_weight="1"
-                android:layout_height="40dp"
-                android:background="@color/colorRed"
-                android:visibility="invisible"
-                android:text="CLOSE"
+                android:layout_height="100dp"
+                android:background="@color/colorGreen"
+                android:layout_margin="15dp"
+                android:text="이벤트 관리"
                 />
         </TableRow>
 
-        <Button
-            android:id="@+id/btn_owner_info"
-            android:layout_width="300dp"
-            android:layout_height="100dp"
-            android:background="@color/colorGreen"
-            android:text="개인 정보 관리"
-            />
+        <TableRow>
+            <Button
+                android:id="@+id/btn_review"
+                android:layout_weight="1"
+                android:layout_height="100dp"
+                android:layout_margin="15dp"
+                android:background="@color/colorPurple"
+                android:text="문의 &amp; 리뷰 관리"
+                />
 
-        <Button
-            android:id="@+id/btn_manage"
-            android:layout_width="300dp"
-            android:layout_height="100dp"
-            android:background="@color/colorPurple"
-            android:text="업체 정보 관리"
-            />
+            <Button
+                android:id="@+id/btn_static"
+                android:layout_weight="1"
+                android:layout_height="100dp"
+                android:layout_margin="15dp"
+                android:text="통계 데이터 관리"
+                android:background="@color/colorGreen"
+                />
 
-        <Button
-            android:id="@+id/btn_event"
-            android:layout_width="300dp"
-            android:layout_height="100dp"
-            android:background="@color/colorGreen"
-            android:text="이벤트 관리"
-            />
+            <Button
+                android:id="@+id/btn_field"
+                android:layout_weight="1"
+                android:layout_height="100dp"
+                android:layout_margin="15dp"
+                android:text="매장 전환"
+                android:background="@color/colorPurple"
+                />
 
-        <Button
-            android:id="@+id/btn_review"
-            android:layout_width="300dp"
-            android:layout_height="100dp"
-            android:background="@color/colorPurple"
-            android:text="문의 &amp; 리뷰 관리"
-            />
-
-        <Button
-            android:id="@+id/btn_static"
-            android:layout_width="300dp"
-            android:layout_height="100dp"
-            android:text="통계 데이터 관리"
-            android:background="@color/colorGreen"
-            />
-
-        <Button
-            android:id="@+id/btn_field"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="To Field"/>
-
-        <Button
-            android:id="@+id/btn_logout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Logout"/>
+        </TableRow>
 
     </TableLayout>
+
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="15dp"
+        android:text="Logout" />
+
 </LinearLayout>

@@ -13,5 +13,4 @@ public class RestaurantData {
     public String close;
 
     public int state = 0;
-
 }

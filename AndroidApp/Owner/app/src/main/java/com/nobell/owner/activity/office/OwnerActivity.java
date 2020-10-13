@@ -18,8 +18,8 @@ import com.nobell.owner.model.UserData;
 
 public class OwnerActivity extends AppCompatActivity {
 
-    private TextView owner_name, owner_email;
-    private EditText owner_pwd, owner_check, owner_phone;
+    private TextView owner_name, owner_email, owner_phone;
+    private EditText owner_pwd, owner_check;
     private Button btn_confirm;
 
     @Override
@@ -34,7 +34,7 @@ public class OwnerActivity extends AppCompatActivity {
         owner_email = (TextView) findViewById(R.id.owner_email);
         owner_pwd = (EditText) findViewById(R.id.owner_pwd);
         owner_check = (EditText) findViewById(R.id.owner_check);
-        owner_phone = (EditText) findViewById(R.id.owner_phone);
+        owner_phone = (TextView) findViewById(R.id.owner_phone);
 
         btn_confirm = (Button) findViewById(R.id.btn_owner);
 
@@ -48,12 +48,10 @@ public class OwnerActivity extends AppCompatActivity {
                 // get data from EditText View
                 String input_pwd = owner_pwd.getText().toString();
                 String input_re_pwd = owner_check.getText().toString();
-                String input_phone = owner_phone.getText().toString();
 
                 // Check blank
                 if(input_pwd.length() == 0) return;
                 if(input_re_pwd.length() == 0) return;
-                if(input_phone.length() == 0) return;
 
                 // If Passwords are Different
                 if (!input_pwd.equals(input_re_pwd)) {
@@ -63,24 +61,16 @@ public class OwnerActivity extends AppCompatActivity {
 
                 // Request Edit Owner to Server
                 HttpConnector MainConnector = new HttpConnector();
-                String param = "user_email=" + user_data.UserEmail + "&password=" + input_pwd + "&phone=" + input_phone + "";
-                String result_owner = MainConnector.ConnectServer(param, "/edit_owner", "POST");
+                String param = "user_email=" + user_data.UserEmail + "&password=" + input_pwd + "";
+                String result_owner = MainConnector.ConnectServer(param, "/owner/edit", "POST");
 
                 if(result_owner.equals("success")){
-                    user_data.UserPhone = input_phone;
                     user_data.UserPwd = input_pwd;
 
                     returnToBack();
                 }
             }
         });
-
-
-
-
-
-
-
     }
 
     // Back to OfficeActivity

@@ -10,8 +10,6 @@
     android:theme="@style/EditTheme"
     tools:context=".activity.MainActivity">
 
-
-
     <ImageView
         android:layout_width="250dp"
         android:layout_height="10dp"

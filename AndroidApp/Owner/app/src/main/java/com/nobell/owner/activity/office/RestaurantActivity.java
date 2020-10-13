@@ -3,7 +3,14 @@ package com.nobell.owner.activity.office;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,7 +20,6 @@ import com.nobell.owner.R;
 import com.nobell.owner.activity.MainActivity;
 import com.nobell.owner.activity.OfficeActivity;
 import com.nobell.owner.activity.office.restaurant.MenuActivity;
-import com.nobell.owner.activity.office.restaurant.PlusMenuActivity;
 import com.nobell.owner.activity.office.restaurant.TableActivity;
 import com.nobell.owner.model.HttpConnector;
 import com.nobell.owner.model.RestaurantData;
@@ -25,13 +31,16 @@ public class RestaurantActivity extends AppCompatActivity {
     private ImageButton rs_img;
     private Button rs_confirm, rs_menu, rs_table;
 
+    private int rs_id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant);
 
         final UserData user_data = MainActivity.user_data;
-        final RestaurantData rs_data =MainActivity.rs_data;
+        final RestaurantData rs_data = MainActivity.rs_data;
+        rs_id = rs_data.rs_id;
 
         // Get View Object
         rs_name = (EditText) findViewById(R.id.rs_name);
@@ -50,8 +59,7 @@ public class RestaurantActivity extends AppCompatActivity {
         rs_table = (Button) findViewById(R.id.btn_table);
 
         // if exist restaurant,
-        if(rs_data.rs_id > 0)
-        {
+        if (rs_data.rs_id > 0) {
             // set exist information
             rs_name.setText(rs_data.name);
             rs_phone.setText(rs_data.phone);
@@ -75,20 +83,26 @@ public class RestaurantActivity extends AppCompatActivity {
                 String input_close = rs_close.getText().toString();
 
                 // check Empty
-                if(input_name.length() == 0) return;
-                if(input_phone.length() == 0) return;
-                if(input_address.length() == 0) return;
-                if(input_intro.length() == 0) return;
-                if(input_open.length() == 0) return;
-                if(input_close.length() == 0) return;
+                if (input_name.length() == 0) return;
+                if (input_phone.length() == 0) return;
+                if (input_address.length() == 0) return;
+                if (input_intro.length() == 0) return;
+                if (input_open.length() == 0) return;
+                if (input_close.length() == 0) return;
 
                 // Connect Web Server to Update Restaurant Data.
                 HttpConnector MainConnector = new HttpConnector();
                 String param = "user_email=" + user_data.UserEmail + "&rs_id=" + user_data.UserRsid + "&name=" + input_name + "&phone=" + input_phone + "&address=" + input_address + "&intro=" + input_intro + "&open=" + input_open + "&close=" + input_close + "";
-                String result_rs = MainConnector.ConnectServer(param, "/restaurant", "POST");
+                String result_rs = MainConnector.ConnectServer(param, "/restaurant/update", "POST");
 
-                if(result_rs.equals("success")){
-                    //  change to input Data
+                // Making Intent
+                Intent intent;
+                intent = new Intent(RestaurantActivity.this, OfficeActivity.class); // (현재 액티비티, 이동할 액티비티)
+
+                if(!result_rs.contains("fail")){
+                    //  change to input
+                    user_data.UserRsid = Integer.parseInt(result_rs);
+                    rs_data.rs_id = user_data.UserRsid;
                     rs_data.name = input_name;
                     rs_data.phone = input_phone;
                     rs_data.address = input_address;
@@ -96,10 +110,6 @@ public class RestaurantActivity extends AppCompatActivity {
                     rs_data.open = input_open;
                     rs_data.close = input_close;
                 }
-
-                // Making Intent
-                Intent intent;
-                intent = new Intent(RestaurantActivity.this, OfficeActivity.class); // (현재 액티비티, 이동할 액티비티)
 
                 // Moving Activity
                 finish();
@@ -112,14 +122,13 @@ public class RestaurantActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(user_data.UserRsid < 1) return;
+                if (user_data.UserRsid < 1) return;
 
                 // Making Intent
                 Intent intent;
                 intent = new Intent(RestaurantActivity.this, MenuActivity.class); // (현재 액티비티, 이동할 액티비티)
 
                 // Moving Activity
-                finish();
                 startActivity(intent);
             }
         });
@@ -129,14 +138,13 @@ public class RestaurantActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(user_data.UserRsid < 1) return;
+                if (user_data.UserRsid < 1) return;
 
                 // Making Intent
                 Intent intent;
                 intent = new Intent(RestaurantActivity.this, TableActivity.class); // (현재 액티비티, 이동할 액티비티)
 
                 // Moving Activity
-                finish();
                 startActivity(intent);
             }
         });
