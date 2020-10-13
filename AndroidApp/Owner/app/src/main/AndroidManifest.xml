@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.nobell.owner">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -13,10 +15,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.office.restaurant.TableActivity"></activity>
-        <activity android:name=".activity.office.restaurant.EditMenuActivity" android:theme="@style/MyAppTheme"/>
-        <activity android:name=".activity.office.restaurant.PlusMenuActivity" android:theme="@style/MyAppTheme"/>
+
+        <activity android:name=".activity.office.restaurant.TableActivity" />
+        <activity
+            android:name=".activity.office.restaurant.EditTableActivity"
+            android:theme="@style/MyAppTheme" />
+        <activity
+            android:name=".activity.office.restaurant.PlusTableActivity"
+            android:theme="@style/MyAppTheme" />
+
         <activity android:name=".activity.office.restaurant.MenuActivity" />
+        <activity
+            android:name=".activity.office.restaurant.EditMenuActivity"
+            android:theme="@style/MyAppTheme" />
+        <activity
+            android:name=".activity.office.restaurant.PlusMenuActivity"
+            android:theme="@style/MyAppTheme" />
+
         <activity android:name=".activity.office.RestaurantActivity" />
         <activity android:name=".activity.office.OwnerActivity" />
         <activity android:name=".activity.SignupActivity" />
