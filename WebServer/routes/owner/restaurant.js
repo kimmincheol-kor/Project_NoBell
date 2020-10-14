@@ -1,65 +1,62 @@
+// Import external Modules
 var express = require('express');
 
-var mysql = require('mysql');
-var pool = mysql.createPool({
-  connectionLimit: 10,
-  host: 'localhost',
-  user: 'root',
-  database: 'nobell',
-  password: '123456'
-});
+// Import internal Modules
+var pool = require('./utils/mysql-pool');
+
+/* ---------------------------------------------------- */
 
 var router = express.Router();
 
 // Get Restaurant Data
 router.get('/:id', function (req, res, next) {
-    console.log('[Get Restaurant Data Request]');
-    console.log('-> Get Rs_id = ', req.params.id);
+    console.log('')
+    console.log('[GET REQUEST : RESTAURANT DATA]');
+    console.log('-> RECV DATA = ', req.params.id);
 
     var rs_id = req.params.id;
 
     pool.getConnection(function (err, connection) {
 
-        var sqlForSelectBoard = "select * FROM nobell.restaurant_tbl WHERE rs_id=?";
+        var sqlForSelectBoard = "SELECT * FROM nobell.restaurant_tbl WHERE rs_id=?";
 
         connection.query(sqlForSelectBoard, rs_id, function (err, data) {
-
+            connection.release();
             if (err) {
                 // fail to get rs data
-                console.log('-> Fail To Get Data : ', err);
-                res.send('fail:500');
+                console.log('-> FAIL : ', err.errno);
+                res.send(`fail:${err.errno}`);
             }
             else {
                 // success to get rs data
-                console.log('-> Success To Get Data', data[0]);
+                console.log('-> SUCCESS');
                 res.send(data[0]);
             }
-
         });
     });
 });
 
 // Change Restaurant State
-router.post('/state', function (req, res, next) {
-    console.log('[Change Restaurant State Request]');
-    console.log('-> Get Rs_id = ', req.body.rs_id);
-    console.log('-> Get state = ', req.body.state);
+router.post('/change_state', function (req, res, next) {
+    console.log('')
+    console.log('[POST REQUEST : CHANGE RESTAURANT STATE]');
+    console.log('-> RECV DATA = ', req.body.rs_id, req.body.state);
 
     // Change
     pool.getConnection(function (err, connection) {
-
-        var sqlForInsertBoard = "update nobell.restaurant_tbl set rs_state=? WHERE rs_id=?";
+        var sqlForInsertBoard = "UPDATE nobell.restaurant_tbl SET rs_state=? WHERE rs_id=?";
         connection.query(sqlForInsertBoard, [req.body.state, req.body.rs_id], function (err, rows) {
+            connection.release();
             if (err) {
-                console.log('-> Fail to Change : ', err);
+                console.log('-> FAIL : ', err.errno);
 
                 if (err.errno == 1062)
-                    res.send("fail:500");
+                    res.send("fail:duplicated");
                 else
-                    res.send("fail:505");
+                    res.send(`fail:${err.errno}`);
             }
             else {
-                console.log('-> Success to Change ! ');
+                console.log('-> SUCCESS');
                 res.send("success");
             }
         });
@@ -68,8 +65,9 @@ router.post('/state', function (req, res, next) {
 
 // Update Restaurant Data
 router.post('/update', function (req, res, next) {
-    console.log('[POST Restaurant Data Request]');
-    console.log('-> Get Rs_id = ', req.body.rs_id);
+    console.log('')
+    console.log('[POST REQUEST : EDIT RESTAURANT DATA]');
+    console.log('-> RECV DATA = ', req.body.rs_id);
 
     var owner_email = req.body.user_email;
     var rs_id = req.body.rs_id;
@@ -87,20 +85,22 @@ router.post('/update', function (req, res, next) {
         // Update
         pool.getConnection(function (err, connection) {
             rs_data.push(rs_id);
-            var sqlForInsertBoard = "update nobell.restaurant_tbl set rs_name=?, rs_phone=?, rs_address=?, rs_intro=?, rs_open=?, rs_close=?, rs_owner=? WHERE rs_id=?";
+            var sqlForInsertBoard = "UPDATE nobell.restaurant_tbl SET rs_name=?, rs_phone=?, rs_address=?, rs_intro=?, rs_open=?, rs_close=?, rs_owner=? WHERE rs_id=?";
             connection.query(sqlForInsertBoard, rs_data, function (err, rows) {
+                connection.release();
                 if (err) {
-                    console.log('-> Fail to Update : ', err);
+                    console.log('-> FAIL : ', err.errno);
 
                     if (err.errno == 1062)
-                        res.send("fail:500");
+                        res.send("fail:duplicated");
                     else
-                        res.send("fail:505");
+                        res.send(`fail:${err.errno}`);
                 }
                 else {
-                    console.log('-> Success to Update ! ');
-                    res.send("success");
+                    console.log('-> SUCCESS');
+                    res.send(`${rs_id}`);
                 }
+                
             });
         });
     } // end of Update
@@ -109,30 +109,30 @@ router.post('/update', function (req, res, next) {
         // Register
         pool.getConnection(function (err, connection) {
 
-            var sqlForInsertBoard = "insert into nobell.restaurant_tbl(rs_name, rs_phone, rs_address, rs_intro, rs_open, rs_close, rs_owner) values(?,?,?,?,?,?,?)";
+            var sqlForInsertBoard = "INSERT INTO nobell.restaurant_tbl(rs_name, rs_phone, rs_address, rs_intro, rs_open, rs_close, rs_owner) VALUES(?,?,?,?,?,?,?)";
             connection.query(sqlForInsertBoard, rs_data, function (err, rows) {
                 if (err) {
-                    console.log('-> Fail to Insert : ', err);
+                    console.log('-> FAIL : ', err.errno);
 
                     if (err.errno == 1062)
-                        res.send("fail:500");
+                        res.send("fail:duplicated");
                     else
-                        res.send("fail:505");
+                        res.send(`fail:${err.errno}`);
                 }
                 else {
-                    console.log('-> Success to Register to ', rows.insertId);
+                    console.log('-> SUCCESS TO : ', rows.insertId);
 
                     // update owner's rs_id
-                    var sqlForOwner = "update nobell.owner_tbl set owner_rs_id=? where owner_email=?";
+                    var sqlForOwner = "UPDATE nobell.owner_tbl SET owner_rs_id=? WHERE owner_email=?";
                     connection.query(sqlForOwner, [rows.insertId, owner_email], function (err2, rows2) {
-                        if (err) res.send("fail:500");
-                        else res.send("success");
+                        connection.release();
+                        if (err) res.send(`fail:${err.errno}`);
+                        else res.send(`${rows.insertId}`);
                     });
                 }
             });
         });
     } // end of Register
 });
-
 
 module.exports = router;

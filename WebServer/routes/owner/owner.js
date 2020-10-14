@@ -1,43 +1,40 @@
+// Import external Modules
 var express = require('express');
 
-var mysql = require('mysql');
-var pool = mysql.createPool({
-  connectionLimit: 10,
-  host: 'localhost',
-  user: 'root',
-  database: 'nobell',
-  password: '123456'
-});
+// Import internal Modules
+var pool = require('./utils/mysql-pool');
+
+/* ---------------------------------------------------- */
 
 var router = express.Router();
 
 // Edit Owner Information Request
 router.post('/edit', function (req, res, next) {
-
-    console.log('[POST Edit Owner Request]');
-    console.log('-> Get owner_email = ', req.body.user_email);
+    console.log('')
+    console.log('[POST REQUEST : EDIT OWNER]');
+    console.log('-> RECV DATA = ', req.body.user_email);
 
     var owner_email = req.body.user_email;
     var new_pwd = req.body.password;
-    var new_phone = req.body.phone;
 
-    var datas = [new_phone, new_pwd, owner_email];
+    var datas = [new_pwd, owner_email];
 
     // Update
     pool.getConnection(function (err, connection) {
 
-        var sqlForInsertBoard = "update nobell.owner_tbl set owner_phone=?, owner_pwd=? WHERE owner_email=?";
+        var sqlForInsertBoard = "UPDATE nobell.owner_tbl SET owner_pwd=? WHERE owner_email=?";
         connection.query(sqlForInsertBoard, datas, function (err, rows) {
+            connection.release();
             if (err) {
-                console.log('-> Fail to Update : ', err);
+                console.log('-> Fail : ', err.errno);
 
                 if (err.errno == 1062)
-                    res.send("fail:500");
+                    res.send("fail:duplicated");
                 else
-                    res.send("fail:505");
+                    res.send(`fail:${err.errno}`);
             }
             else {
-                console.log('-> Success to Update ! ');
+                console.log('-> SUCCESS');
                 res.send("success");
             }
         });

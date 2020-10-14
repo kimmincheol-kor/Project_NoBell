@@ -34,6 +34,11 @@ const port = process.env.PORT || 3000;
 
 // Start Listening
 server.listen(port, err => {
-    if(err) console.log('ERROR : ', err);
-    else    console.log(`*** [ START NOBELL SERVER ] [ port = ${port} ] ***`);
+  if (err) console.log('ERROR : ', err);
+  else {
+    console.log('----------------------------------------------------')
+    console.log(`    [ START SERVER ]   NOBELL   [ PORT = ${port} ]`);
+    console.log('----------------------------------------------------')
+  }
+  console.log('')
 });

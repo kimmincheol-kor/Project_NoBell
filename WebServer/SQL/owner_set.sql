@@ -5,8 +5,8 @@ create table owner_info(
 	owner_phone char(16) not null, 
     owner_rs_id int(11),
 
-	PRIMARY KEY(owner_email), 
-	UNIQUE KEY(owner_phone) 
+	PRIMARY KEY(owner_email),
+	UNIQUE KEY(owner_phone)
 );
 
 create table restaurant(
@@ -18,7 +18,14 @@ create table restaurant(
     rs_intro char(100),
     rs_open char(5) not null,
     rs_close char(5) not null,
+    rs_state tinyint(1) DEFAULT 0 not null,
     rs_owner char(32) not null,
     
     PRIMARY KEY(rs_id)
+);
+
+create table menu (
+	menu_rs_id INT(11) not null,
+    menu_name char(50) not null,
+    menu_price char(20) not null
 );
