@@ -30,20 +30,20 @@ router.post('/signup', (req, res, next) => {
     const signupSql = "INSERT INTO nobell.owner_tbl(owner_email, owner_pwd, owner_name, owner_phone) VALUES(?,?,?,?)";
     const signupData = [req.body.reg_email, req.body.reg_pwd, req.body.reg_name, req.body.reg_phone];
 
-    mysqlQuery(signupSql, signupData)
-        .then((data) => {
+    (async (sql, data) => {
+        try {
+            const rows = await mysqlQuery(sql, data);
+
             console.log('-> SUCCESS');
-            res.header(200);
             res.send("success");
-        })
-        .catch((err) => {
+        } catch (err) {
             console.log('-> FAIL :', err.errno);
-            res.header(500);
             if (err.errno == 1062)
                 res.send("fail:duplicated");
             else
                 res.send(`fail:${err.errno}`);
-        });
+        }
+    })(signupSql, signupData)
 });
 
 // Signin Request
@@ -55,26 +55,23 @@ router.post('/signin', (req, res, next) => {
     const signinSql = "select * FROM nobell.owner_tbl WHERE owner_email=? AND owner_pwd=?";
     const signinData = [req.body.login_email, req.body.login_pwd];
 
-    mysqlQuery(signinSql, signinData)
-        .then((data) => {
-            // Incorrect Email or Password
-            if (data == "") {
+    (async (sql, data) => {
+        try {
+            const rows = await mysqlQuery(sql, data);
+
+            if (rows == "") {
                 console.log('-> FAIL : Incorrect Data')
-                res.header(500);
                 res.send('fail:incorrect');
             }
-            // Correct Email and Password
             else {
                 console.log('-> SUCCESS')
-                res.header(200);
-                res.send(data[0]);
+                res.send(rows[0]);
             }
-        })
-        .catch((err) => {
+        } catch {
             console.log('-> FAIL :', err.errno);
-            res.header(500);
             res.send(`fail:${err.errno}`);
-        });
+        }
+    })(signinSql, signinData)
 });
 
 // Routings
