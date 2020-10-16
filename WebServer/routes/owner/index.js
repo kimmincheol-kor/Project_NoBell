@@ -1,9 +1,9 @@
 // Import external Modules
-var express = require('express');
+const express = require('express');
 
 // Import internal Modules
-var pool = require('./utils/mysql-pool');
-var mysqlQuery = require('./utils/mysql-query');
+const pool = require('./utils/mysql-pool');
+const mysqlQuery = require('./utils/mysql-query');
 
 // Import Owner's Routers
 const ownerRouter = require('./owner');
@@ -13,7 +13,7 @@ const tableRouter = require('./table');
 
 /* ---------------------------------------------------- */
 
-var router = express.Router();
+const router = express.Router();
 
 // Default URL for Test
 router.get('/', function (req, res, next) {
@@ -25,30 +25,25 @@ router.get('/', function (req, res, next) {
 router.post('/signup', (req, res, next) => {
     console.log('')
     console.log('[POST REQUEST : SIGNUP]');
-    console.log('-> RECV DATA = ', reg_data);
+    console.log('-> RECV DATA = ', req.body.reg_email);
 
-    var reg_data = [req.body.reg_email, req.body.reg_pwd, req.body.reg_name, req.body.reg_phone];
+    const signupSql = "INSERT INTO nobell.owner_tbl(owner_email, owner_pwd, owner_name, owner_phone) VALUES(?,?,?,?)";
+    const signupData = [req.body.reg_email, req.body.reg_pwd, req.body.reg_name, req.body.reg_phone];
 
-    pool.getConnection(function (err, connection) {
-        var sqlForInsertBoard = "INSERT INTO nobell.owner_tbl(owner_email, owner_pwd, owner_name, owner_phone) VALUES(?,?,?,?)";
-        connection.query(sqlForInsertBoard, reg_data, function (err, rows) {
-            connection.release();
-            
-            if (err) {
-                console.log('-> FAIL : ', err.errno);
-                res.header(500);
-                if (err.errno == 1062)
-                    res.send("fail:duplicated");
-                else
-                    res.send(`fail:${err.errno}`);
-            }
-            else {
-                console.log('-> SUCCESS');
-                res.header(200);
-                res.send("success");
-            }
+    mysqlQuery(signupSql, signupData)
+        .then((data) => {
+            console.log('-> SUCCESS');
+            res.header(200);
+            res.send("success");
+        })
+        .catch((err) => {
+            console.log('-> FAIL :', err.errno);
+            res.header(500);
+            if (err.errno == 1062)
+                res.send("fail:duplicated");
+            else
+                res.send(`fail:${err.errno}`);
         });
-    });
 });
 
 // Signin Request
@@ -57,10 +52,10 @@ router.post('/signin', (req, res, next) => {
     console.log('[POST REQUEST : SIGNIN]');
     console.log('-> RECV DATA = ', req.body.login_email);
 
-    var sqlForSelectBoard = "select * FROM nobell.owner_tbl WHERE owner_email=? AND owner_pwd=?";
-    var login_data = [req.body.login_email, req.body.login_pwd];
+    const signinSql = "select * FROM nobell.owner_tbl WHERE owner_email=? AND owner_pwd=?";
+    const signinData = [req.body.login_email, req.body.login_pwd];
 
-    mysqlQuery(sqlForSelectBoard, login_data)
+    mysqlQuery(signinSql, signinData)
         .then((data) => {
             // Incorrect Email or Password
             if (data == "") {
@@ -75,8 +70,8 @@ router.post('/signin', (req, res, next) => {
                 res.send(data[0]);
             }
         })
-            .catch((err) => {
-            console.log('-> FAIL : ', err.errno);
+        .catch((err) => {
+            console.log('-> FAIL :', err.errno);
             res.header(500);
             res.send(`fail:${err.errno}`);
         });
