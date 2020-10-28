@@ -7,52 +7,81 @@
     android:orientation="vertical"
     tools:context=".activity.FieldActivity">
 
+    <TextView
+        android:id="@+id/tv_restaurant_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="60dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="등록된 업체가 없습니다."
+        android:paddingVertical="20dp"
+        android:textSize="35dp"
+        />
+
     <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
-        android:layout_margin="50dp">
+        android:layout_margin="15dp">
 
-        <TextView
-            android:id="@+id/tv_office_restaurant"
-            android:layout_width="300dp"
-            android:layout_height="100dp"
-            android:gravity="center_horizontal|center_vertical"
-            android:text="등록된 업체가 없습니다."
-            />
+        <TableRow>
 
-        <Button
-            android:id="@+id/btn_office_info"
-            android:layout_width="300dp"
-            android:layout_height="100dp"
-            android:text="주문 관리"
-            />
+            <Button
+                android:id="@+id/btn_order"
+                android:layout_height="100dp"
+                android:layout_margin="15dp"
+                android:layout_weight="1"
+                android:background="@color/colorGreen"
+                android:text="주문 요청" />
 
-        <Button
-            android:id="@+id/btn_office_edit"
-            android:layout_width="300dp"
-            android:layout_height="100dp"
-            android:text="테이블 관리"
-            />
+            <Button
+                android:id="@+id/btn_pay"
+                android:layout_weight="1"
+                android:layout_height="100dp"
+                android:background="@color/colorPurple"
+                android:layout_margin="15dp"
+                android:text="계산 요청"
+                />
 
-        <Button
-            android:id="@+id/btn_office_event"
-            android:layout_width="300dp"
-            android:layout_height="100dp"
-            android:text="예약 관리"
-            />
+        </TableRow>
 
-        <Button
-            android:id="@+id/btn_office_review"
-            android:layout_width="300dp"
-            android:layout_height="100dp"
-            android:text="계산 요청 관리"
-            />
+        <TableRow>
+            <Button
+                android:id="@+id/btn_visit"
+                android:layout_weight="1"
+                android:layout_height="100dp"
+                android:layout_margin="15dp"
+                android:background="@color/colorPurple"
+                android:text="방문 관리"
+                />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="To Office"/>
-
+            <Button
+                android:id="@+id/btn_reserve"
+                android:layout_weight="1"
+                android:layout_height="100dp"
+                android:layout_margin="15dp"
+                android:text="예약 관리"
+                android:background="@color/colorGreen"
+                />
+        </TableRow>
     </TableLayout>
+    
+    <EditText
+        android:id="@+id/et_pin"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center"
+        android:inputType="numberPassword"
+        android:maxLength="4"
+        />
+
+    <Button
+        android:id="@+id/btn_toOwner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="사장 전환" />
+
 </LinearLayout>
