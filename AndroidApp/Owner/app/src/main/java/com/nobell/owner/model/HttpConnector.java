@@ -14,12 +14,14 @@ import java.net.URL;
 
 public class HttpConnector {
 
-    public String HttpIP = "http://192.168.219.100:3000/owner";
+    public String HttpIP = "http://192.168.219.103:3000/owner";
 
     public String HttpParam;
     public String HttpURL;
     public String HttpMethod;
+
     public String HttpResult;
+    public String HttpResCode;
 
     public String ConnectServer(String param, String url, String method) {
         this.HttpParam = param;
@@ -69,6 +71,7 @@ public class HttpConnector {
                 BufferedReader in = null;
                 String data = "";
 
+                HttpResCode = Integer.toString(conn.getResponseCode());
                 is = conn.getInputStream();
                 in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
                 String line = null;
@@ -79,7 +82,7 @@ public class HttpConnector {
                 }
                 HttpResult = buff.toString();
                 data = HttpResult.trim();
-                Log.e("RECV DATA", data);
+                Log.e("RECV CODE", HttpResCode);
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -89,6 +92,5 @@ public class HttpConnector {
 
             return HttpResult;
         }
-
     }
 }

@@ -26,11 +26,10 @@ import java.net.URL;
 
 public class SignupActivity extends AppCompatActivity {
 
-    private EditText reg_name, reg_email, reg_pwd, reg_check, reg_phone;
+    private EditText reg_name, reg_email, reg_pwd, reg_check, reg_phone, reg_pin;
     private Button btn_register;
 
-    private String name, email, pwd, re_pwd, phone;
-    private String result_register;
+    private String name, email, pwd, re_pwd, phone, pin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +42,7 @@ public class SignupActivity extends AppCompatActivity {
         reg_pwd = (EditText) findViewById(R.id.reg_pwd);
         reg_check = (EditText) findViewById(R.id.reg_check);
         reg_phone = (EditText) findViewById(R.id.reg_phone);
+        reg_pin = (EditText) findViewById(R.id.reg_pin);
 
         btn_register = (Button) findViewById(R.id.btn_register);
 
@@ -58,9 +58,10 @@ public class SignupActivity extends AppCompatActivity {
                 pwd = reg_pwd.getText().toString();
                 re_pwd = reg_check.getText().toString();
                 phone = reg_phone.getText().toString();
+                pin = reg_pin.getText().toString();
 
                 // If Empty Text
-                if(name.length() == 0 || email.length() == 0 || pwd.length() == 0 || phone.length() == 0) {
+                if(name.length() == 0 || email.length() == 0 || pwd.length() == 0 || phone.length() == 0 || pin.length() == 0) {
                     Toast.makeText(SignupActivity.this, "Please Fill All Blank", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -73,11 +74,13 @@ public class SignupActivity extends AppCompatActivity {
 
                 // Request Register New Owner
                 HttpConnector RegisterConnector = new HttpConnector();
-                String param = "reg_name=" + name + "&reg_email=" + email + "&reg_pwd=" + pwd + "&reg_phone=" + phone + "";
-                result_register = RegisterConnector.ConnectServer(param, "/signup", "POST");
+                String param = "signup_name=" + name + "&signup_email=" + email + "&signup_pw=" + pwd + "&signup_phone=" + phone + "&signup_pin=" + pin + "";
+                RegisterConnector.ConnectServer(param, "/signup", "POST");
+
+                String httpCode = RegisterConnector.HttpResCode;
 
                 // if Success To Register.
-                if (!result_register.contains("fail")) {
+                if (httpCode.equals("200")) {
                     Toast.makeText(SignupActivity.this, "Success to Register", Toast.LENGTH_SHORT).show();
 
                     Intent intent;
@@ -89,7 +92,7 @@ public class SignupActivity extends AppCompatActivity {
                 }
                 // if Fail To Register.
                 else {
-                    if (result_register.equals("fail:duplicated")) {
+                    if (httpCode.equals("409")) {
                         Toast.makeText(SignupActivity.this, "Fail to Register : Exist Member", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(SignupActivity.this, "Fail to Register : ERROR IN SERVER", Toast.LENGTH_SHORT).show();

@@ -82,27 +82,28 @@ public class MainActivity extends AppCompatActivity {
 
                 // Connect Web Server to Login.
                 HttpConnector MainConnector = new HttpConnector();
-                String param = "login_email=" + in_id + "&login_pwd=" + in_pw + "";
-                result_login = MainConnector.ConnectServer(param, "/signin", "POST");
+                String param = "signin_email=" + in_id + "&signin_pw=" + in_pw + "";
+                MainConnector.ConnectServer(param, "/signin", "POST");
 
-                // Parsing JSON
-                try {
-                    JSONObject json_user = new JSONObject(result_login);
+                String httpCode = MainConnector.HttpResCode;
+                String httpResult = MainConnector.HttpResult;
 
-                    user_data.UserEmail = json_user.getString("owner_email").toString().trim();
-                    user_data.UserPwd = json_user.getString("owner_pwd").toString().trim();
-                    user_data.UserName = json_user.getString("owner_name").toString().trim();
-                    user_data.UserPhone = json_user.getString("owner_phone").toString().trim();
-                    user_data.UserRsid = json_user.getInt("owner_rs_id");
+                if(httpCode.equals("200")) {
+                    // Parsing JSON
+                    try {
+                        JSONObject json_user = new JSONObject(httpResult);
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                        user_data.UserEmail = json_user.getString("owner_email").toString().trim();
+                        user_data.UserPwd = json_user.getString("owner_pw").toString().trim();
+                        user_data.UserName = json_user.getString("owner_name").toString().trim();
+                        user_data.UserPhone = json_user.getString("owner_phone").toString().trim();
+                        user_data.UserPin = json_user.getString("owner_pin").toString().trim();
+                        user_data.UserRsid = json_user.getInt("owner_rs_id");
 
-                // Check Result of Login
-                // Success
-                if(!result_login.contains("fail"))
-                {
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
                     Toast.makeText(MainActivity.this, "Success to Login", Toast.LENGTH_SHORT).show();
 
                     editor.putBoolean("AutoLogin", cb_autologin.isChecked());
@@ -113,23 +114,17 @@ public class MainActivity extends AppCompatActivity {
 
                     // Move
                     Intent intent;
-                    intent = new Intent(MainActivity.this, OfficeActivity.class); // (현재 액티비티, 이동할 액티비티)
+                    intent = new Intent(MainActivity.this, FieldActivity.class); // (현재 액티비티, 이동할 액티비티)
 
                     finish();
                     startActivity(intent);
                 }
-                // Fail
-                else
-                {
-                    if(result_login.equals("fail:incorrect")) {
-                        Toast.makeText(MainActivity.this, "Fail to Login : Input Data is Incorrect", Toast.LENGTH_SHORT).show();
-                    }
-                    else {
-                        Toast.makeText(MainActivity.this, "Fail to Login : SERVER ERROR", Toast.LENGTH_SHORT).show();
-                    }
+                else if (httpCode.equals("404")) {
+                    Toast.makeText(MainActivity.this, "Fail to Login : Input Data is Incorrect", Toast.LENGTH_SHORT).show();
                 }
-
-
+                else {
+                    Toast.makeText(MainActivity.this, "Fail to Login : SERVER ERROR", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         // End of Siginin Click

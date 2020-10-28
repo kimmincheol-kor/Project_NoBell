@@ -91,15 +91,17 @@ public class RestaurantActivity extends AppCompatActivity {
                 if (input_close.length() == 0) return;
 
                 // Connect Web Server to Update Restaurant Data.
-                HttpConnector MainConnector = new HttpConnector();
-                String param = "user_email=" + user_data.UserEmail + "&rs_id=" + user_data.UserRsid + "&name=" + input_name + "&phone=" + input_phone + "&address=" + input_address + "&intro=" + input_intro + "&open=" + input_open + "&close=" + input_close + "";
-                String result_rs = MainConnector.ConnectServer(param, "/restaurant/update", "POST");
+                HttpConnector RsConnector = new HttpConnector();
+                String param = "owner_email=" + user_data.UserEmail + "&rs_id=" + user_data.UserRsid + "&rs_name=" + input_name + "&rs_phone=" + input_phone + "&rs_address=" + input_address + "&rs_intro=" + input_intro + "&rs_open=" + input_open + "&rs_close=" + input_close + "";
+                String result_rs = RsConnector.ConnectServer(param, "/restaurant/", "POST");
+
+                String httpCode = RsConnector.HttpResCode;
 
                 // Making Intent
                 Intent intent;
                 intent = new Intent(RestaurantActivity.this, OfficeActivity.class); // (현재 액티비티, 이동할 액티비티)
 
-                if(!result_rs.contains("fail")){
+                if(httpCode.equals("200")){
                     //  change to input
                     user_data.UserRsid = Integer.parseInt(result_rs);
                     rs_data.rs_id = user_data.UserRsid;

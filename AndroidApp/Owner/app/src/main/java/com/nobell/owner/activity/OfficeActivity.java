@@ -121,7 +121,7 @@ public class OfficeActivity extends AppCompatActivity {
 
                 // Connect Web Server to Get Restaurant Data.
                 HttpConnector OfficeConnector = new HttpConnector();
-                result_rs = OfficeConnector.ConnectServer(param, "/restaurant/change_state", "POST");
+                result_rs = OfficeConnector.ConnectServer(param, "/restaurant/switch", "POST");
             }
         });
 
@@ -206,7 +206,7 @@ public class OfficeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Making Intent
                 Intent intent;
-                intent = new Intent(OfficeActivity.this, OwnerActivity.class); // (현재 액티비티, 이동할 액티비티)
+                intent = new Intent(OfficeActivity.this, FieldActivity.class); // (현재 액티비티, 이동할 액티비티)
 
                 // Moving Activity
                 finish();

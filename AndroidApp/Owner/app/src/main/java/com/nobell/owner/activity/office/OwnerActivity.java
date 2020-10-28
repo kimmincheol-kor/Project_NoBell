@@ -60,14 +60,18 @@ public class OwnerActivity extends AppCompatActivity {
                 }
 
                 // Request Edit Owner to Server
-                HttpConnector MainConnector = new HttpConnector();
-                String param = "user_email=" + user_data.UserEmail + "&password=" + input_pwd + "";
-                String result_owner = MainConnector.ConnectServer(param, "/owner/edit", "POST");
+                HttpConnector OwnerConnector = new HttpConnector();
+                String param = "owner_email=" + user_data.UserEmail + "&owner_pw=" + input_pwd + "";
+                String result_owner = OwnerConnector.ConnectServer(param, "/info", "POST");
 
-                if(result_owner.equals("success")){
+                String httpCode = OwnerConnector.HttpResCode;
+
+                if(httpCode.equals("200")){
                     user_data.UserPwd = input_pwd;
-
                     returnToBack();
+                }
+                else {
+                    return;
                 }
             }
         });

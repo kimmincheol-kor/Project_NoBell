@@ -5,6 +5,7 @@ public class UserData {
     public String UserPwd;
     public String UserName;
     public String UserPhone;
+    public String UserPin;
     public int UserRsid = -1;
     public Boolean UserLogined;
     public Boolean UserAuto;
@@ -14,6 +15,7 @@ public class UserData {
         this.UserPwd = "";
         this.UserName = "";
         this.UserPhone = "";
+        this.UserPin = "";
         this.UserRsid = -1;
         this.UserLogined = false;
         this.UserAuto = false;
