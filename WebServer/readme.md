@@ -7,7 +7,6 @@
 |로그인|/owner/signin|POST|
 |회원가입|/owner/signup|POST|
 |개인정보수정|/owner/info|POST|
-|사장-직원 모드 전환|/owner/info/switch|POST|
 |-----------------------------|---------------------------|----------|
 |업체정보 열람|/owner/restaurant/:id|GET|
 |업체 등록/수정/삭제|/owner/restaurant/|POST|

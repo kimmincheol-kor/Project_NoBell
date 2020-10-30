@@ -48,54 +48,58 @@ public class MenuActivity extends AppCompatActivity {
         // 1. get Datas.
         // Connect Web Server to Read Menus. : GET
         HttpConnector MenuConnector = new HttpConnector();
-        String str_menus = MenuConnector.ConnectServer("", "/menu/read/" + String.valueOf(user_data.UserRsid), "GET");
+        String str_menus = MenuConnector.ConnectServer("", "/menu/" + String.valueOf(user_data.UserRsid), "GET");
 
-        // Parsing JSON
-        try {
-            JSONArray jArr = new JSONArray(str_menus);
+        String httpCode = MenuConnector.HttpResCode;
 
-            for(int i=0; i<jArr.length(); i++){
-                JSONObject jsonMenu = jArr.getJSONObject(i);
+        if(httpCode.equals("200")) {
+            // Parsing JSON
+            try {
+                JSONArray jArr = new JSONArray(str_menus);
 
-                String menuName = jsonMenu.getString("menu_name");
-                String menuPrice = jsonMenu.getString("menu_price");
+                for(int i=0; i<jArr.length(); i++){
+                    JSONObject jsonMenu = jArr.getJSONObject(i);
 
-                // 2. add View to Layout.
-                // Menu name View
-                TextView tv_name = new TextView(this);
-                tv_name.setWidth(300);
-                tv_name.setHeight(120);
-                tv_name.setTextSize(30);
-                tv_name.setText(menuName);
-                tv_name.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        TextView selectMenu = (TextView) view;
+                    String menuName = jsonMenu.getString("menu_name");
+                    String menuPrice = jsonMenu.getString("menu_price");
 
-                        String menuName = selectMenu.getText().toString();
+                    // 2. add View to Layout.
+                    // Menu name View
+                    TextView tv_name = new TextView(this);
+                    tv_name.setWidth(300);
+                    tv_name.setHeight(120);
+                    tv_name.setTextSize(30);
+                    tv_name.setText(menuName);
+                    tv_name.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            TextView selectMenu = (TextView) view;
 
-                        Intent intent = new Intent(MenuActivity.this, EditMenuActivity.class);
-                        intent.putExtra("menu_name", menuName);
+                            String menuName = selectMenu.getText().toString();
 
-                        startActivityForResult(intent, 2);
-                    }
-                });
-                tv_name.setBackground(getDrawable(R.drawable.boarder));
+                            Intent intent = new Intent(MenuActivity.this, EditMenuActivity.class);
+                            intent.putExtra("menu_name", menuName);
 
-                // Menu Price View
-                TextView tv_price = new TextView(this);
-                tv_price.setWidth(300);
-                tv_price.setHeight(60);
-                tv_price.setGravity(Gravity.RIGHT);
-                tv_price.setTextSize(15);
-                tv_price.setText(menuPrice + "원");
+                            startActivityForResult(intent, 2);
+                        }
+                    });
+                    tv_name.setBackground(getDrawable(R.drawable.boarder));
 
-                view_menus.addView(tv_name);
-                view_menus.addView(tv_price);
+                    // Menu Price View
+                    TextView tv_price = new TextView(this);
+                    tv_price.setWidth(300);
+                    tv_price.setHeight(60);
+                    tv_price.setGravity(Gravity.RIGHT);
+                    tv_price.setTextSize(15);
+                    tv_price.setText(menuPrice + "원");
+
+                    view_menus.addView(tv_name);
+                    view_menus.addView(tv_price);
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
 
         // Click : Plus Menu Btn.
@@ -124,7 +128,7 @@ public class MenuActivity extends AppCompatActivity {
                 // Connect Web Server to Insert Menu Data.
                 HttpConnector MenuConnector = new HttpConnector();
                 String param = "rs_id=" + user_data.UserRsid + "&menu_name=" + new_name + "&menu_price=" + new_price + "&operation=create" + "";
-                String result_menu = MenuConnector.ConnectServer(param, "/menu/update", "POST");
+                String result_menu = MenuConnector.ConnectServer(param, "/menu/", "POST");
 
                 recreate();
             }
@@ -140,7 +144,7 @@ public class MenuActivity extends AppCompatActivity {
                 // Connect Web Server to Update Menu Data.
                 HttpConnector MenuConnector = new HttpConnector();
                 String param = "rs_id=" + user_data.UserRsid + "&menu_name=" + edit_name + "&menu_price=" + edit_price + "&operation=update" + "";
-                String result_menu = MenuConnector.ConnectServer(param, "/menu/update", "POST");
+                String result_menu = MenuConnector.ConnectServer(param, "/menu/", "POST");
 
                 recreate();
             }
@@ -153,7 +157,7 @@ public class MenuActivity extends AppCompatActivity {
                 // Connect Web Server to Delete Menu Data.
                 HttpConnector MenuConnector = new HttpConnector();
                 String param = "rs_id=" + user_data.UserRsid + "&menu_name=" + del_name + "&operation=delete" + "";
-                String result_menu = MenuConnector.ConnectServer(param, "/menu/update", "POST");
+                String result_menu = MenuConnector.ConnectServer(param, "/menu/", "POST");
 
                 recreate();
             }

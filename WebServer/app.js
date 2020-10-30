@@ -1,32 +1,39 @@
 // External Modules
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const express = require('express');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const os = require('os');
 
 // Internal Modules
 // ...
 
 // Internal Routers
-var indexRouter = require('./routes/index');
-var customerRouter = require('./routes/customer');
-var ownerRouter = require('./routes/owner/index');
+const customerRouter = require('./routes/customer');
+const ownerRouter = require('./routes/owner');3
 
-// Main App
-var app = express();
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+// Set Middleware
+const app = express();
 app.use(logger('dev'));
+app.use(cookieParser('mySignature'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
-// Routings
-app.use('/', indexRouter);
+// Custom Middleware
+app.use('*', (req, res, next) => {
+  console.log('');
+  console.log(`=> [Method : ${req.method}] [URL : ${req.originalUrl}]`);
+  console.log('-> RECV DATA :', req.body);
+  next();
+});
+
 app.use('/customer', customerRouter);
 app.use('/owner', ownerRouter);
+
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.send('ERROR');
+});
 
 // Create HTTP Server Object
 const server = require('http').Server(app);
@@ -36,6 +43,7 @@ const port = process.env.PORT || 3000;
 server.listen(port, err => {
   if (err) console.log('ERROR : ', err);
   else {
+    console.log('IP :', os.networkInterfaces()['Wi-Fi'][1].cidr);
     console.log('----------------------------------------------------')
     console.log(`    [ START SERVER ]   NOBELL   [ PORT = ${port} ]`);
     console.log('----------------------------------------------------')
