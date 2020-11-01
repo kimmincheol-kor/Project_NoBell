@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.nobell.owner.R;
+import com.nobell.owner.activity.field.ReserveActivity;
+import com.nobell.owner.activity.field.VisitActivity;
 import com.nobell.owner.model.HttpConnector;
 import com.nobell.owner.model.RestaurantData;
 import com.nobell.owner.model.UserData;
@@ -91,14 +93,16 @@ public class FieldActivity extends AppCompatActivity {
         btn_visit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(FieldActivity.this, VisitActivity.class);
+                startActivity(intent);
             }
         });
 
         btn_reserve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(FieldActivity.this, ReserveActivity.class);
+                startActivity(intent);
             }
         });
 

@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
+        <activity android:name=".activity.field.ReserveActivity"></activity>
+        <activity android:name=".activity.field.VisitActivity" />
         <activity android:name=".activity.office.restaurant.TableActivity" />
         <activity
             android:name=".activity.office.restaurant.EditTableActivity"
@@ -23,7 +24,6 @@
         <activity
             android:name=".activity.office.restaurant.PlusTableActivity"
             android:theme="@style/MyAppTheme" />
-
         <activity android:name=".activity.office.restaurant.MenuActivity" />
         <activity
             android:name=".activity.office.restaurant.EditMenuActivity"
@@ -31,7 +31,6 @@
         <activity
             android:name=".activity.office.restaurant.PlusMenuActivity"
             android:theme="@style/MyAppTheme" />
-
         <activity android:name=".activity.office.RestaurantActivity" />
         <activity android:name=".activity.office.OwnerActivity" />
         <activity android:name=".activity.SignupActivity" />
