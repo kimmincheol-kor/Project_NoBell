@@ -33,7 +33,7 @@
                 android:layout_margin="15dp"
                 android:layout_weight="1"
                 android:background="@color/colorGreen"
-                android:text="주문 요청" />
+                android:text="주문 관리" />
 
             <Button
                 android:id="@+id/btn_pay"
@@ -41,7 +41,7 @@
                 android:layout_height="100dp"
                 android:background="@color/colorPurple"
                 android:layout_margin="15dp"
-                android:text="계산 요청"
+                android:text="테이블 관리"
                 />
 
         </TableRow>
@@ -56,14 +56,27 @@
                 android:text="방문 관리"
                 />
 
-            <Button
-                android:id="@+id/btn_reserve"
+            <TableRow
                 android:layout_weight="1"
-                android:layout_height="100dp"
-                android:layout_margin="15dp"
-                android:text="예약 관리"
-                android:background="@color/colorGreen"
-                />
+                android:layout_margin="15dp">
+
+                <Button
+                    android:id="@+id/btn_reserve"
+                    android:layout_weight="1"
+                    android:layout_height="100dp"
+                    android:text="예약 관리"
+                    android:background="@color/colorGreen"
+                    />
+
+                <Button
+                    android:id="@+id/btn_rsvList"
+                    android:layout_weight="1"
+                    android:text="예약 리스트"
+                    android:layout_height="100dp"
+                    android:background="@color/colorRed"
+                    />
+            </TableRow>
+
         </TableRow>
     </TableLayout>
     

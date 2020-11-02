@@ -14,7 +14,7 @@ import java.net.URL;
 
 public class HttpConnector {
 
-    public String HttpIP = "http://192.168.219.102:3000/owner";
+    public String HttpIP = "http://10.20.14.70:3000/owner";
 
     public String HttpParam;
     public String HttpURL;

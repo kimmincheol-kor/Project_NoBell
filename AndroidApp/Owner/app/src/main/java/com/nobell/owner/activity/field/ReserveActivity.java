@@ -46,7 +46,10 @@ public class ReserveActivity extends AppCompatActivity {
                 JSONArray jArr = new JSONArray(httpResult);
 
                 TableRow.LayoutParams params = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
-                params.weight = 1;
+                TableRow.LayoutParams wparams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
+                TableRow.LayoutParams btnparams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
+                wparams.weight = 1;
+                btnparams.width = 230;
 
                 for(int i=0; i<jArr.length(); i++){
                     JSONObject jsonMenu = jArr.getJSONObject(i);
@@ -63,27 +66,33 @@ public class ReserveActivity extends AppCompatActivity {
 
                     // 2. add View to Layout.
                     TextView tv_table = new TextView(this);
+                    TextView tv_headcount = new TextView(this);
                     TextView tv_customer = new TextView(this);
                     TextView tv_time = new TextView(this);
 
                     tv_table.setTextSize(12);
-                    tv_table.setWidth(70);
+                    tv_table.setWidth(60);
                     tv_table.setGravity(Gravity.CENTER);
                     tv_table.setText(tableNo+"");
 
+                    tv_headcount.setTextSize(12);
+                    tv_headcount.setWidth(50);
+                    tv_headcount.setGravity(Gravity.CENTER);
+                    tv_headcount.setText(headcount+"");
+
                     tv_customer.setTextSize(12);
-                    tv_table.setWidth(70);
+                    tv_customer.setWidth(50);
                     tv_customer.setGravity(Gravity.CENTER);
-                    tv_customer.setText(headcount+"");
+                    tv_customer.setText(customer+"");
 
                     tv_time.setTextSize(12);
-                    tv_table.setWidth(120);
                     tv_time.setGravity(Gravity.CENTER);
-                    tv_time.setText(visitTime.substring(0, 10)+"-"+visitTime.substring(11, 19));
+                    tv_time.setText(visitTime.substring(0, 10)+"&"+visitTime.substring(11, 19));
 
-                    newRow.addView(tv_table);
-                    newRow.addView(tv_customer);
-                    newRow.addView(tv_time);
+                    newRow.addView(tv_table, params);
+                    newRow.addView(tv_headcount, params);
+                    newRow.addView(tv_customer, params);
+                    newRow.addView(tv_time, wparams);
 
                     TableRow btnRow = new TableRow(this);
 
@@ -138,9 +147,9 @@ public class ReserveActivity extends AppCompatActivity {
                         }
                     });
 
-                    btnRow.addView(btn_confirm, params);
-                    btnRow.addView(btn_reject, params);
-                    newRow.addView(btnRow, params);
+                    btnRow.addView(btn_confirm, wparams);
+                    btnRow.addView(btn_reject, wparams);
+                    newRow.addView(btnRow, btnparams);
 
                     layout_reserve.addView(newRow);
                 }

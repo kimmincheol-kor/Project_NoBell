@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.field.ReserveActivity"></activity>
+        <activity android:name=".activity.field.ReserveListActivity"></activity>
+        <activity android:name=".activity.field.ReserveActivity" />
         <activity android:name=".activity.field.VisitActivity" />
         <activity android:name=".activity.office.restaurant.TableActivity" />
         <activity

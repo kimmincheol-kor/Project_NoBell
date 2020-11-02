@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.nobell.owner.R;
 import com.nobell.owner.activity.field.ReserveActivity;
+import com.nobell.owner.activity.field.ReserveListActivity;
 import com.nobell.owner.activity.field.VisitActivity;
 import com.nobell.owner.model.HttpConnector;
 import com.nobell.owner.model.RestaurantData;
@@ -26,7 +27,7 @@ public class FieldActivity extends AppCompatActivity {
     public static RestaurantData rs_data;
 
     private TextView tv_restaurant_field;
-    private Button btn_order, btn_pay, btn_visit, btn_reserve, btn_toOwner;
+    private Button btn_order, btn_pay, btn_visit, btn_reserve, btn_rsvList, btn_toOwner;
     private EditText et_pin;
 
     @Override
@@ -43,6 +44,7 @@ public class FieldActivity extends AppCompatActivity {
         btn_pay = (Button) findViewById(R.id.btn_pay);
         btn_visit = (Button) findViewById(R.id.btn_visit);
         btn_reserve = (Button) findViewById(R.id.btn_reserve);
+        btn_rsvList = (Button) findViewById(R.id.btn_rsvList);
         btn_toOwner = (Button) findViewById(R.id.btn_toOwner);
         et_pin = (EditText) findViewById(R.id.et_pin);
 
@@ -102,6 +104,14 @@ public class FieldActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(FieldActivity.this, ReserveActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btn_rsvList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(FieldActivity.this, ReserveListActivity.class);
                 startActivity(intent);
             }
         });

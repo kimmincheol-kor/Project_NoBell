@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.field.ReserveActivity">
+    tools:context=".activity.field.ReserveListActivity">
 
     <TableLayout
-        android:id="@+id/layout_reserve"
+        android:id="@+id/layout_rsvlist"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -28,6 +28,7 @@
                 android:gravity="center"
                 android:text="인원"
                 />
+
             <TextView
                 android:layout_width="50dp"
                 android:layout_marginRight="10dp"
@@ -35,6 +36,7 @@
                 android:gravity="center"
                 android:text="고객"
                 />
+
             <TextView
                 android:layout_weight="1"
                 android:layout_marginRight="10dp"

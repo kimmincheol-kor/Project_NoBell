@@ -2,7 +2,6 @@ package com.nobell.owner.activity.field;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -21,25 +20,25 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class VisitActivity extends AppCompatActivity {
+public class ReserveListActivity extends AppCompatActivity {
 
-    private TableLayout layout_visit;
+    private TableLayout layout_rsvList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_visit);
+        setContentView(R.layout.activity_reserve_list);
 
         UserData user_data = MainActivity.user_data;
 
-        layout_visit = (TableLayout) findViewById(R.id.layout_visit);
+        layout_rsvList = (TableLayout) findViewById(R.id.layout_rsvlist);
 
         ////// Get Visits From Server
-        HttpConnector VisitConnector = new HttpConnector();
-        VisitConnector.ConnectServer("", "/visit/" + String.valueOf(user_data.UserRsid), "GET");
+        HttpConnector ReserveConnector = new HttpConnector();
+        ReserveConnector.ConnectServer("", "/reserve/accepted/" + String.valueOf(user_data.UserRsid), "GET");
 
-        String httpCode = VisitConnector.HttpResCode;
-        String httpResult = VisitConnector.HttpResult;
+        String httpCode = ReserveConnector.HttpResCode;
+        String httpResult = ReserveConnector.HttpResult;
 
         if(httpCode.equals("200")) {
             // Parsing JSON
@@ -48,9 +47,7 @@ public class VisitActivity extends AppCompatActivity {
 
                 TableRow.LayoutParams params = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
                 TableRow.LayoutParams wparams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
-                TableRow.LayoutParams btnparams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
                 wparams.weight = 1;
-                btnparams.width = 230;
 
                 for(int i=0; i<jArr.length(); i++){
                     JSONObject jsonMenu = jArr.getJSONObject(i);
@@ -59,11 +56,11 @@ public class VisitActivity extends AppCompatActivity {
 
                     newRow.setMinimumHeight(90);
 
-                    int visitID = jsonMenu.getInt("visit_id");
-                    int tableNo = jsonMenu.getInt("visit_table");
-                    String customer = jsonMenu.getString("visit_customer");
-                    int headcount = jsonMenu.getInt("visit_headcount");
-                    String visitTime = jsonMenu.getString("visit_time");
+                    int rsvID = jsonMenu.getInt("arsv_id");
+                    int tableNo = jsonMenu.getInt("arsv_table");
+                    String customer = jsonMenu.getString("arsv_customer");
+                    int headcount = jsonMenu.getInt("arsv_headcount");
+                    String visitTime = jsonMenu.getString("arsv_target");
 
                     // 2. add View to Layout.
                     TextView tv_table = new TextView(this);
@@ -87,7 +84,6 @@ public class VisitActivity extends AppCompatActivity {
                     tv_customer.setText(customer+"");
 
                     tv_time.setTextSize(12);
-                    tv_customer.setWidth(150);
                     tv_time.setGravity(Gravity.CENTER);
                     tv_time.setText(visitTime.substring(0, 10)+"&"+visitTime.substring(11, 19));
 
@@ -98,62 +94,37 @@ public class VisitActivity extends AppCompatActivity {
 
                     TableRow btnRow = new TableRow(this);
 
-                    Button btn_confirm = new Button(this);
                     Button btn_reject = new Button(this);
 
-                    btn_confirm.setText("승인");
-                    btn_confirm.setTextSize(10);
-                    btn_confirm.setGravity(Gravity.CENTER);
-                    btn_confirm.setHint(visitID+"");
-                    btn_confirm.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Button me = (Button) view;
-                            String visitID = me.getHint().toString();
-
-                            HttpConnector VisitConnector = new HttpConnector();
-                            VisitConnector.ConnectServer("visit_id=" + visitID + "", "/visit/confirm", "POST");
-
-                            String httpCode = VisitConnector.HttpResCode;
-                            if (httpCode.equals("200")) {
-                                Toast.makeText(VisitActivity.this, "처리 성공", Toast.LENGTH_SHORT).show();
-                                recreate();
-                            }
-                            else {
-                                Toast.makeText(VisitActivity.this, "처리 실패", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-
-                    btn_reject.setText("거절");
+                    btn_reject.setText("취소");
+                    btn_reject.setWidth(50);
                     btn_reject.setTextSize(10);
                     btn_reject.setGravity(Gravity.CENTER);
-                    btn_reject.setHint(visitID+"");
+                    btn_reject.setHint(rsvID+"");
                     btn_reject.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             Button me = (Button) view;
                             String visitID = me.getHint().toString();
 
-                            HttpConnector VisitConnector = new HttpConnector();
-                            VisitConnector.ConnectServer("visit_id=" + visitID + "", "/visit/reject", "POST");
+                            HttpConnector ReserveConnector = new HttpConnector();
+                            ReserveConnector.ConnectServer("rsv_id=" + visitID + "", "/reserve/accepted", "POST");
 
-                            String httpCode = VisitConnector.HttpResCode;
+                            String httpCode = ReserveConnector.HttpResCode;
                             if (httpCode.equals("200")) {
-                                Toast.makeText(VisitActivity.this, "처리 성공", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ReserveListActivity.this, "처리 성공", Toast.LENGTH_SHORT).show();
                                 recreate();
                             }
                             else {
-                                Toast.makeText(VisitActivity.this, "처리 실패", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ReserveListActivity.this, "처리 실패", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
 
-                    btnRow.addView(btn_confirm, wparams);
-                    btnRow.addView(btn_reject, wparams);
-                    newRow.addView(btnRow, btnparams);
+                    btnRow.addView(btn_reject, params);
+                    newRow.addView(btnRow, params);
 
-                    layout_visit.addView(newRow);
+                    layout_rsvList.addView(newRow);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
