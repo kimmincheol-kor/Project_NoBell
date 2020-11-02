@@ -26,10 +26,10 @@ router.post('/', function (req, res, next) {
 
   // Classify by operation
   if (req.body.operation == "create") {
-    postTableSql = `INSERT INTO nobell.table_tbl(table_rs_id, table_no, table_position_x, table_position_y, table_headcount) values(${req.body.rs_id}, ${req.body.table_no}, ${req.body.table_x}, ${req.body.table_y}, ${req.body.table_headcount})`;
+    postTableSql = `INSERT INTO nobell.table_tbl(table_rs_id, table_no, table_position_x, table_position_y, table_maxCount) values(${req.body.rs_id}, ${req.body.table_no}, ${req.body.table_x}, ${req.body.table_y}, ${req.body.table_headcount})`;
   }
   else if (req.body.operation == "update") {
-    postTableSql = `UPDATE nobell.table_tbl SET table_headcount=${req.body.table_headcount} WHERE table_rs_id=${req.body.rs_id} AND table_no=${req.body.table_no}`;
+    postTableSql = `UPDATE nobell.table_tbl SET table_maxCount=${req.body.table_headcount} WHERE table_rs_id=${req.body.rs_id} AND table_no=${req.body.table_no}`;
   }
   else if (req.body.operation == "delete") {
     postTableSql = `DELETE FROM nobell.table_tbl WHERE table_rs_id=${req.body.rs_id} AND table_no=${req.body.table_no}`;

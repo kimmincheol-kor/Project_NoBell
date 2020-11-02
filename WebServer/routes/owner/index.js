@@ -9,6 +9,8 @@ const infoRouter = require('./routers/info');
 const restaurantRouter = require('./routers/restaurant');
 const menuRouter = require('./routers/menu');
 const tableRouter = require('./routers/table');
+const visitRouter = require('./routers/visit');
+const reserveRouter = require('./routers/reserve');
 
 /* ---------------------------------------------------- */
 
@@ -48,5 +50,7 @@ router.use('/info', infoRouter);
 router.use('/restaurant', restaurantRouter);
 router.use('/menu', menuRouter);
 router.use('/table', tableRouter);
+router.use('/visit', visitRouter);reserveRouter
+router.use('/reserve', reserveRouter);
 
 module.exports = router;
