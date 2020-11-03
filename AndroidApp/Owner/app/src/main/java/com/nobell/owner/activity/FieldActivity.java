@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.nobell.owner.R;
+import com.nobell.owner.activity.field.ManageTableActivity;
 import com.nobell.owner.activity.field.ReserveActivity;
 import com.nobell.owner.activity.field.ReserveListActivity;
 import com.nobell.owner.activity.field.VisitActivity;
@@ -27,7 +28,7 @@ public class FieldActivity extends AppCompatActivity {
     public static RestaurantData rs_data;
 
     private TextView tv_restaurant_field;
-    private Button btn_order, btn_pay, btn_visit, btn_reserve, btn_rsvList, btn_toOwner;
+    private Button btn_manageOrder, btn_manageTable, btn_visit, btn_reserve, btn_rsvList, btn_toOwner;
     private EditText et_pin;
 
     @Override
@@ -40,8 +41,8 @@ public class FieldActivity extends AppCompatActivity {
 
         // Get View Object
         tv_restaurant_field = (TextView) findViewById(R.id.tv_restaurant_field);
-        btn_order = (Button) findViewById(R.id.btn_order);
-        btn_pay = (Button) findViewById(R.id.btn_pay);
+        btn_manageOrder = (Button) findViewById(R.id.btn_manageOrder);
+        btn_manageTable = (Button) findViewById(R.id.btn_manageTable);
         btn_visit = (Button) findViewById(R.id.btn_visit);
         btn_reserve = (Button) findViewById(R.id.btn_reserve);
         btn_rsvList = (Button) findViewById(R.id.btn_rsvList);
@@ -78,17 +79,18 @@ public class FieldActivity extends AppCompatActivity {
             }
         }
 
-        btn_order.setOnClickListener(new View.OnClickListener() {
+        btn_manageOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
             }
         });
 
-        btn_pay.setOnClickListener(new View.OnClickListener() {
+        btn_manageTable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(FieldActivity.this, ManageTableActivity.class);
+                startActivity(intent);
             }
         });
 

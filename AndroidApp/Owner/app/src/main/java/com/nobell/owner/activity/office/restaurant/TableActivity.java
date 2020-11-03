@@ -67,7 +67,7 @@ public class TableActivity extends AppCompatActivity {
                         Button rs_table = new Button(this);
                         rs_table.setGravity(Gravity.CENTER);
                         rs_table.setHeight(20);
-                        rs_table.setHint((i+1) + "," + (j+1));
+                        rs_table.setHint((j+1)+","+(i+1));
 
                         // If Exist Table
                         if (table_x == (j+1) && table_y == (i+1)) {
@@ -104,8 +104,10 @@ public class TableActivity extends AppCompatActivity {
                                     Button selectTable = (Button) view;
 
                                     String position = selectTable.getHint().toString();
-                                    int position_x = position.charAt(2) - 48;
-                                    int position_y = position.charAt(0) - 48;
+                                    Log.e("BLAH", position);
+                                    int idx = position.indexOf(',');
+                                    int position_x = Integer.parseInt(position.substring(0, idx));
+                                    int position_y = Integer.parseInt(position.substring(idx+1, position.length()));
 
                                     Intent intent = new Intent(TableActivity.this, PlusTableActivity.class);
                                     intent.putExtra("position_x", position_x);
@@ -133,7 +135,8 @@ public class TableActivity extends AppCompatActivity {
                     Button rs_table = new Button(this);
                     rs_table.setGravity(Gravity.CENTER);
                     rs_table.setHeight(20);
-                    rs_table.setHint((i+1) + "," + (j+1));
+                    rs_table.setHint((j+1) + "," + (i+1));
+                    Log.e("BLAH", (i+1) + "," + (j+1));
 
                     // If Empty Table
                     if (true) {
@@ -144,8 +147,10 @@ public class TableActivity extends AppCompatActivity {
                                 Button selectTable = (Button) view;
 
                                 String position = selectTable.getHint().toString();
-                                int position_x = position.charAt(2) - 48;
-                                int position_y = position.charAt(0) - 48;
+                                Log.e("BLAH", position);
+                                int idx = position.indexOf(',');
+                                int position_x = Integer.parseInt(position.substring(0, idx));
+                                int position_y = Integer.parseInt(position.substring(idx+1, position.length()));
 
                                 Intent intent = new Intent(TableActivity.this, PlusTableActivity.class);
                                 intent.putExtra("position_x", position_x);

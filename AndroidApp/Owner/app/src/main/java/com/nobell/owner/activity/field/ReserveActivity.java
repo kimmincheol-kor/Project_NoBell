@@ -87,7 +87,7 @@ public class ReserveActivity extends AppCompatActivity {
 
                     tv_time.setTextSize(12);
                     tv_time.setGravity(Gravity.CENTER);
-                    tv_time.setText(visitTime.substring(0, 10)+"&"+visitTime.substring(11, 19));
+                    tv_time.setText(visitTime);
 
                     newRow.addView(tv_table, params);
                     newRow.addView(tv_headcount, params);

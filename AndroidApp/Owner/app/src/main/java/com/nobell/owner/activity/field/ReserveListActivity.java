@@ -47,7 +47,9 @@ public class ReserveListActivity extends AppCompatActivity {
 
                 TableRow.LayoutParams params = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
                 TableRow.LayoutParams wparams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
+                TableRow.LayoutParams btnparams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
                 wparams.weight = 1;
+                btnparams.width = 230;
 
                 for(int i=0; i<jArr.length(); i++){
                     JSONObject jsonMenu = jArr.getJSONObject(i);
@@ -85,7 +87,7 @@ public class ReserveListActivity extends AppCompatActivity {
 
                     tv_time.setTextSize(12);
                     tv_time.setGravity(Gravity.CENTER);
-                    tv_time.setText(visitTime.substring(0, 10)+"&"+visitTime.substring(11, 19));
+                    tv_time.setText(visitTime);
 
                     newRow.addView(tv_table, params);
                     newRow.addView(tv_headcount, params);
@@ -94,21 +96,22 @@ public class ReserveListActivity extends AppCompatActivity {
 
                     TableRow btnRow = new TableRow(this);
 
+                    Button btn_confirm = new Button(this);
                     Button btn_reject = new Button(this);
 
-                    btn_reject.setText("취소");
-                    btn_reject.setWidth(50);
-                    btn_reject.setTextSize(10);
-                    btn_reject.setGravity(Gravity.CENTER);
-                    btn_reject.setHint(rsvID+"");
-                    btn_reject.setOnClickListener(new View.OnClickListener() {
+                    btn_confirm.setText("승인");
+                    btn_reject.setWidth(25);
+                    btn_confirm.setTextSize(10);
+                    btn_confirm.setGravity(Gravity.CENTER);
+                    btn_confirm.setHint(rsvID+"");
+                    btn_confirm.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             Button me = (Button) view;
                             String visitID = me.getHint().toString();
 
                             HttpConnector ReserveConnector = new HttpConnector();
-                            ReserveConnector.ConnectServer("rsv_id=" + visitID + "", "/reserve/accepted", "POST");
+                            ReserveConnector.ConnectServer("arsv_id=" + visitID + "", "/reserve/accepted/confirm", "POST");
 
                             String httpCode = ReserveConnector.HttpResCode;
                             if (httpCode.equals("200")) {
@@ -121,8 +124,34 @@ public class ReserveListActivity extends AppCompatActivity {
                         }
                     });
 
-                    btnRow.addView(btn_reject, params);
-                    newRow.addView(btnRow, params);
+                    btn_reject.setText("취소");
+                    btn_reject.setWidth(25);
+                    btn_reject.setTextSize(10);
+                    btn_reject.setGravity(Gravity.CENTER);
+                    btn_reject.setHint(rsvID+"");
+                    btn_reject.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Button me = (Button) view;
+                            String visitID = me.getHint().toString();
+
+                            HttpConnector ReserveConnector = new HttpConnector();
+                            ReserveConnector.ConnectServer("arsv_id=" + visitID + "", "/reserve/accepted/cancel", "POST");
+
+                            String httpCode = ReserveConnector.HttpResCode;
+                            if (httpCode.equals("200")) {
+                                Toast.makeText(ReserveListActivity.this, "처리 성공", Toast.LENGTH_SHORT).show();
+                                recreate();
+                            }
+                            else {
+                                Toast.makeText(ReserveListActivity.this, "처리 실패", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+                    btnRow.addView(btn_confirm, wparams);
+                    btnRow.addView(btn_reject, wparams);
+                    newRow.addView(btnRow, btnparams);
 
                     layout_rsvList.addView(newRow);
                 }

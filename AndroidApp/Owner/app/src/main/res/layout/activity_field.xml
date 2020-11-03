@@ -28,7 +28,7 @@
         <TableRow>
 
             <Button
-                android:id="@+id/btn_order"
+                android:id="@+id/btn_manageOrder"
                 android:layout_height="100dp"
                 android:layout_margin="15dp"
                 android:layout_weight="1"
@@ -36,7 +36,7 @@
                 android:text="주문 관리" />
 
             <Button
-                android:id="@+id/btn_pay"
+                android:id="@+id/btn_manageTable"
                 android:layout_weight="1"
                 android:layout_height="100dp"
                 android:background="@color/colorPurple"
