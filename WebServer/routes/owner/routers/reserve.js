@@ -20,25 +20,14 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/confirm', (req, res) => {
-    // req.body.rsv_id
     const getReserveSql = `SELECT * FROM nobell.reservation_tbl WHERE rsv_id=${req.body.rsv_id}`;
-    (async (sql) => { // Get Visit Data
+    (async (sql) => {
         try {
             const rsv = await mysqlAPI(sql);
-
-            // MySQL DATETIME
-            const targetT = new Date(rsv[0].rsv_target);
-            const targetTime = targetT.toISOString();
-
-            const rsvT = new Date(rsv[0].rsv_time);
-            const rsvTime = rsvT.toISOString();
-
-            target = targetTime.substring(0, 10) + "&" + targetTime.substring(11, 19);
-            reserve = rsvTime.substring(0, 10) + "&" + rsvTime.substring(11, 19);
             
             const setReserveListSql = `INSERT INTO nobell.accept_rsv_tbl
-                                                (arsv_rs_id, arsv_table, arsv_customer, arsv_headcount, arsv_target, arsv_time)
-                                                VALUES (${rsv[0].rsv_rs_id}, ${rsv[0].rsv_table}, "${rsv[0].rsv_customer}", ${rsv[0].rsv_headcount}, "${target}", "${reserve}")`;
+                                                (arsv_rs_id, arsv_table, arsv_customer, arsv_headcount, arsv_target)
+                                                VALUES (${rsv[0].rsv_rs_id}, ${rsv[0].rsv_table}, "${rsv[0].rsv_customer}", ${rsv[0].rsv_headcount}, "${rsv[0].rsv_target}")`;
             await mysqlAPI(setReserveListSql);
                 
             const delReserveSql = `DELETE FROM nobell.reservation_tbl WHERE rsv_id=${req.body.rsv_id}`
@@ -63,8 +52,10 @@ router.post('/reject', (req, res) => {
     })(delReserveSql); 
 });
 
+////////// ACCEPTED RESERVATION
+
 router.get('/accepted/:id', (req, res) => {
-    const getAllaReserveSql = `SELECT * FROM nobell.accept_rsv_tbl WHERE arsv_rs_id=${req.params.id} ORDER BY arsv_time`;
+    const getAllaReserveSql = `SELECT * FROM nobell.accept_rsv_tbl WHERE arsv_rs_id=${req.params.id} ORDER BY arsv_target`;
 
     (async (sql) => {
         try {
@@ -76,8 +67,30 @@ router.get('/accepted/:id', (req, res) => {
     })(getAllaReserveSql)
 });
 
-router.post('/accepted', (req, res) => {
-    const delaReserveSql = `DELETE FROM nobell.accept_rsv_tbl WHERE arsv_id=${req.body.rsv_id}`;
+router.post('/accepted/confirm', (req, res) => {
+    const getARsvSql = `SELECT * FROM nobell.accept_rsv_tbl WHERE arsv_id=${req.body.arsv_id}`;
+    (async (sql) => {
+        try {
+            const rows1 = await mysqlAPI(sql);
+            
+            const setTableSql = `UPDATE nobell.table_tbl
+                                    SET table_state=1, table_customer="${rows1[0].arsv_customer}", table_time=NOW(), table_headCount=${rows1[0].arsv_headcount}
+                                    WHERE  table_rs_id=${rows1[0].arsv_rs_id} AND table_no=${rows1[0].arsv_table} AND table_state=0
+                                    `
+            await mysqlAPI(setTableSql);
+                
+            const delVisitSql = `DELETE FROM nobell.accept_rsv_tbl WHERE arsv_id=${req.body.arsv_id}`
+            await mysqlAPI(delVisitSql)
+            
+            res.status(200).send(rows1);
+        } catch (err) {
+    res.status(err).send();
+        }
+    })(getARsvSql);
+});
+
+router.post('/accepted/cancel', (req, res) => {
+    const delaReserveSql = `DELETE FROM nobell.accept_rsv_tbl WHERE arsv_id=${req.body.arsv_id}`;
     (async (sql) => {
         try {
             const rows = await mysqlAPI(sql);
