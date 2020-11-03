@@ -4,30 +4,46 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const os = require('os');
+const passport = require('./passport');
 
 // Internal Modules
-// ...
 
 // Internal Routers
 const customerRouter = require('./routes/customer');
-const ownerRouter = require('./routes/owner');3
+const ownerRouter = require('./routes/owner');
+
+////////////////////////////////////////////////////////
+
+const mySignature = "12345";
 
 // Set Middleware
 const app = express();
 app.use(logger('dev'));
-app.use(cookieParser('mySignature'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser(mySignature));
+app.use(session({
+  resave: false,
+  saveUninitialized: true,
+  secret: mySignature,
+  cookie: {
+    httpOnly: true,
+    secure: false,
+  }
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Custom Middleware
 app.use('*', (req, res, next) => {
   console.log('');
   console.log(`=> [Method : ${req.method}] [URL : ${req.originalUrl}]`);
-  console.log('-> RECV DATA :', req.body);
+  console.log('=> SESSION :', req.session);
+  console.log('=> RECV DATA :', req.body); 
   next();
 });
 
-app.use('/customer', customerRouter);
+app.use('/user', customerRouter);
 app.use('/owner', ownerRouter);
 
 app.use((err, req, res, next) => {

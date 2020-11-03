@@ -3,6 +3,7 @@ const router = require('express').Router();
 
 // Import internal Modules
 const mysqlAPI = require('./utils/mysqlAPI');
+const passport = require('../../passport');
 
 // Import Owner's Routers
 const infoRouter = require('./routers/info');
@@ -31,18 +32,18 @@ router.post('/signup', (req, res, next) => {
 });
 
 // Signin Request
-router.post('/signin', (req, res, next) => {
-    const signinSql = `select * FROM nobell.owner_tbl 
-                                WHERE owner_email="${req.body.signin_email}" AND owner_pw="${req.body.signin_pw}"`;
-
-    (async (sql) => {
-        try {
-            const rows = await mysqlAPI(sql);
-            res.status(200).send(rows[0]);
-        } catch (err) {
-            res.status(err).send();
+router.post('/signin', (req, res) => {
+    // Login By Passport
+    passport.authenticate('local', (err, user, info) => {
+        if (err) res.status(500).send(err);
+        else if (user) {
+            req.logIn(user, (err) => {
+                if (err) res.status(500).send(err);
+                else res.status(200).send(user);
+            });
         }
-    })(signinSql)
+        else if (info) res.status(404).send(info.message);
+    })(req, res);
 });
 
 // Routings
@@ -50,7 +51,7 @@ router.use('/info', infoRouter);
 router.use('/restaurant', restaurantRouter);
 router.use('/menu', menuRouter);
 router.use('/table', tableRouter);
-router.use('/visit', visitRouter);reserveRouter
+router.use('/visit', visitRouter); reserveRouter
 router.use('/reserve', reserveRouter);
 
 module.exports = router;
