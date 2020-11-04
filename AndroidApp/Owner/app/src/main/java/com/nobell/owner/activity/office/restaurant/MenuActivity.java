@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -17,13 +18,13 @@ import android.widget.Toast;
 import com.nobell.owner.R;
 import com.nobell.owner.activity.MainActivity;
 import com.nobell.owner.model.HttpConnector;
-import com.nobell.owner.model.UserData;
+import com.nobell.owner.model.OwnerData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.nobell.owner.activity.MainActivity.user_data;
+//import static com.nobell.owner.activity.MainActivity.OwnerData;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -31,15 +32,11 @@ public class MenuActivity extends AppCompatActivity {
 
     private LinearLayout view_menus;
 
-    private UserData user_data;
-
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-
-        user_data = MainActivity.user_data;
 
         btn_plus_menu = (Button) findViewById(R.id.btn_plus_menu);
         view_menus = (LinearLayout) findViewById(R.id.view_menus);
@@ -48,14 +45,15 @@ public class MenuActivity extends AppCompatActivity {
         // 1. get Datas.
         // Connect Web Server to Read Menus. : GET
         HttpConnector MenuConnector = new HttpConnector();
-        String str_menus = MenuConnector.ConnectServer("", "/menu/" + String.valueOf(user_data.UserRsid), "GET");
+        MenuConnector.ConnectServer("", "/menu", "GET");
 
         String httpCode = MenuConnector.HttpResCode;
+        String httpResult = MenuConnector.HttpResult;
 
         if(httpCode.equals("200")) {
             // Parsing JSON
             try {
-                JSONArray jArr = new JSONArray(str_menus);
+                JSONArray jArr = new JSONArray(httpResult);
 
                 for(int i=0; i<jArr.length(); i++){
                     JSONObject jsonMenu = jArr.getJSONObject(i);
@@ -96,7 +94,6 @@ public class MenuActivity extends AppCompatActivity {
                     view_menus.addView(tv_name);
                     view_menus.addView(tv_price);
                 }
-
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -106,7 +103,6 @@ public class MenuActivity extends AppCompatActivity {
         btn_plus_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent = new Intent(MenuActivity.this, PlusMenuActivity.class);
                 startActivityForResult(intent, 1);
             }
@@ -127,8 +123,16 @@ public class MenuActivity extends AppCompatActivity {
                 // Send to Server : Menu Data
                 // Connect Web Server to Insert Menu Data.
                 HttpConnector MenuConnector = new HttpConnector();
-                String param = "rs_id=" + user_data.UserRsid + "&menu_name=" + new_name + "&menu_price=" + new_price + "&operation=create" + "";
-                String result_menu = MenuConnector.ConnectServer(param, "/menu/", "POST");
+                String param  = "menu_name=" + new_name + "&menu_price=" + new_price + "";
+                MenuConnector.ConnectServer(param, "/menu", "POST");
+
+                String httpCode = MenuConnector.HttpResCode;
+                if (httpCode.equals("200")) {
+                    Toast.makeText(MenuActivity.this, "성공", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(MenuActivity.this, "실패", Toast.LENGTH_SHORT).show();
+                }
 
                 recreate();
             }
@@ -143,8 +147,16 @@ public class MenuActivity extends AppCompatActivity {
 
                 // Connect Web Server to Update Menu Data.
                 HttpConnector MenuConnector = new HttpConnector();
-                String param = "rs_id=" + user_data.UserRsid + "&menu_name=" + edit_name + "&menu_price=" + edit_price + "&operation=update" + "";
-                String result_menu = MenuConnector.ConnectServer(param, "/menu/", "POST");
+                String param = "menu_name=" + edit_name + "&menu_price=" + edit_price + "";
+                MenuConnector.ConnectServer(param, "/menu/", "PUT");
+
+                String httpCode = MenuConnector.HttpResCode;
+                if (httpCode.equals("200")) {
+                    Toast.makeText(MenuActivity.this, "성공", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(MenuActivity.this, "실패", Toast.LENGTH_SHORT).show();
+                }
 
                 recreate();
             }
@@ -156,8 +168,16 @@ public class MenuActivity extends AppCompatActivity {
 
                 // Connect Web Server to Delete Menu Data.
                 HttpConnector MenuConnector = new HttpConnector();
-                String param = "rs_id=" + user_data.UserRsid + "&menu_name=" + del_name + "&operation=delete" + "";
-                String result_menu = MenuConnector.ConnectServer(param, "/menu/", "POST");
+                String param = "menu_name=" + del_name + "";
+                MenuConnector.ConnectServer(param, "/menu/", "DELETE");
+
+                String httpCode = MenuConnector.HttpResCode;
+                if (httpCode.equals("200")) {
+                    Toast.makeText(MenuActivity.this, "성공", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(MenuActivity.this, "실패", Toast.LENGTH_SHORT).show();
+                }
 
                 recreate();
             }

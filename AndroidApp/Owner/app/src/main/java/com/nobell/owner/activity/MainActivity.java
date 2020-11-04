@@ -1,35 +1,19 @@
 package com.nobell.owner.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.nobell.owner.R;
 import com.nobell.owner.model.HttpConnector;
-import com.nobell.owner.model.RestaurantData;
-import com.nobell.owner.model.UserData;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import com.nobell.owner.model.OwnerData;
+import com.nobell.owner.model.mySP;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,25 +24,15 @@ public class MainActivity extends AppCompatActivity {
     private CheckBox cb_autologin;
 
     private String in_id, in_pw;
-    private String result_login;
-
-    public static Context context_main;
-    public static UserData user_data;
-    public static RestaurantData rs_data;
-
-    // Load SharedPreference : appData
-    public static SharedPreferences appData;
-    public static SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        user_data = new UserData();
-        rs_data = new RestaurantData();
-
-        context_main = this;
+        // Initialize SharedPreference
+        mySP.appData = getSharedPreferences("appData", MODE_PRIVATE);
+        mySP.init();
 
         // Get View Object
         btn_signin = (Button)findViewById(R.id.btn_signin);
@@ -67,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
         et_pwd = (EditText) findViewById(R.id.et_pwd);
         cb_autologin = (CheckBox) findViewById(R.id.cb_autologin);
 
-        // Click Event : Signin Button
         btn_signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,99 +59,50 @@ public class MainActivity extends AppCompatActivity {
                 MainConnector.ConnectServer(param, "/signin", "POST");
 
                 String httpCode = MainConnector.HttpResCode;
-                String httpResult = MainConnector.HttpResult;
 
                 if(httpCode.equals("200")) {
-                    // Parsing JSON
-                    try {
-                        JSONObject json_user = new JSONObject(httpResult);
-
-                        user_data.UserEmail = json_user.getString("owner_email").toString().trim();
-                        user_data.UserPwd = json_user.getString("owner_pw").toString().trim();
-                        user_data.UserName = json_user.getString("owner_name").toString().trim();
-                        user_data.UserPhone = json_user.getString("owner_phone").toString().trim();
-                        user_data.UserPin = json_user.getString("owner_pin").toString().trim();
-                        user_data.UserRsid = json_user.getInt("owner_rs_id");
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    OwnerData.updateInfo(); //
 
                     Toast.makeText(MainActivity.this, "Success to Login", Toast.LENGTH_SHORT).show();
 
-                    editor.putBoolean("AutoLogin", cb_autologin.isChecked());
-                    editor.putBoolean("UserLogined", user_data.UserLogined);
-                    editor.putString("UserEmail", user_data.UserEmail);
-                    editor.putString("UserPwd", user_data.UserPwd);
-                    editor.apply();
+                    if(cb_autologin.isChecked()) {
+                        mySP.editor.putBoolean("AutoLogin", cb_autologin.isChecked());
+                        mySP.editor.putString("OwnerEmail", OwnerData.OwnerEmail);
+                        mySP.editor.putString("OwnerPw", OwnerData.OwnerPw);
+                        mySP.editor.apply();
+                    }
 
-                    // Move
-                    Intent intent;
-                    intent = new Intent(MainActivity.this, FieldActivity.class); // (현재 액티비티, 이동할 액티비티)
-
+                    // Move to Field
+                    Intent intent = new Intent(MainActivity.this, FieldActivity.class); // (현재 액티비티, 이동할 액티비티)
                     finish();
                     startActivity(intent);
                 }
                 else if (httpCode.equals("404")) {
-                    Toast.makeText(MainActivity.this, "Fail to Login : Input Data is Incorrect", Toast.LENGTH_SHORT).show();
+                    String httpResult = MainConnector.HttpResult;
+                    Toast.makeText(MainActivity.this, httpResult, Toast.LENGTH_SHORT).show();
                 }
                 else {
                     Toast.makeText(MainActivity.this, "Fail to Login : SERVER ERROR", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        // End of Siginin Click
 
-        // Click Event : Signup Button
         btn_signup.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-
-                // Making Intent
-                Intent intent;
-                intent = new Intent(MainActivity.this, SignupActivity.class);
-
-                // Moving Activity
+                Intent intent = new Intent(MainActivity.this, SignupActivity.class);
                 startActivity(intent);
-
             }
         });
-        // End of Signup Click
 
-        // Set SharedPreference : user_data
-        appData = getSharedPreferences("appData", MODE_PRIVATE);
-        editor = appData.edit();
-
-        // Load Saved Data
-        // Get Saved Login Data
-        user_data.UserAuto = appData.getBoolean("AutoLogin", false);
-        user_data.UserLogined = appData.getBoolean("UserLogined", false);
-        user_data.UserEmail = appData.getString("UserEmail", "");
-        user_data.UserPwd = appData.getString("UserPwd", "");
-
-        Log.e("user : ", user_data.UserAuto.toString());
-
-        // if AutoLogin,
-        if(user_data.UserAuto)
+        if(OwnerData.OwnerAuto)
         {
-            // Set Saved Data,
-            et_id.setText(user_data.UserEmail);
-            et_pwd.setText(user_data.UserPwd);
-            cb_autologin.setChecked(user_data.UserAuto);
+            et_id.setText(OwnerData.OwnerEmail);
+            et_pwd.setText(OwnerData.OwnerPw);
+            cb_autologin.setChecked(OwnerData.OwnerAuto);
 
-            // Auto Click Signin button
+            // Auto Click
             btn_signin.callOnClick();
-        }
-        else{
-            // Clear Saved Login Data
-            editor.putBoolean("AutoLogin", false);
-            editor.putBoolean("UserLogined", false);
-            editor.putString("UserEmail", "");
-            editor.putString("UserPwd", "");
-
-            user_data.clear_user();
-
-            editor.apply();
         }
     }
 }

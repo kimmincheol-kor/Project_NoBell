@@ -66,7 +66,7 @@ public class HttpConnector {
                 conn.connect();
 
                 /* 안드로이드 -> 서버 파라메터값 전달 */
-                if(HttpMethod.equals("POST")) {
+                if(!HttpMethod.equals("GET")) {
                     OutputStream outs = conn.getOutputStream();
                     outs.write(param.getBytes("UTF-8"));
                     outs.flush();

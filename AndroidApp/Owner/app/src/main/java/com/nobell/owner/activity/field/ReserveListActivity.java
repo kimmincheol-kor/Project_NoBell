@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.nobell.owner.R;
 import com.nobell.owner.activity.MainActivity;
 import com.nobell.owner.model.HttpConnector;
-import com.nobell.owner.model.UserData;
+import com.nobell.owner.model.OwnerData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,13 +29,11 @@ public class ReserveListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reserve_list);
 
-        UserData user_data = MainActivity.user_data;
-
         layout_rsvList = (TableLayout) findViewById(R.id.layout_rsvlist);
 
         ////// Get Visits From Server
         HttpConnector ReserveConnector = new HttpConnector();
-        ReserveConnector.ConnectServer("", "/reserve/accepted/" + String.valueOf(user_data.UserRsid), "GET");
+        ReserveConnector.ConnectServer("", "/reserve/accepted", "GET");
 
         String httpCode = ReserveConnector.HttpResCode;
         String httpResult = ReserveConnector.HttpResult;

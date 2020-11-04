@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.nobell.owner.R;
 import com.nobell.owner.activity.MainActivity;
 import com.nobell.owner.model.HttpConnector;
-import com.nobell.owner.model.UserData;
+import com.nobell.owner.model.OwnerData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,13 +30,11 @@ public class VisitActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visit);
 
-        UserData user_data = MainActivity.user_data;
-
         layout_visit = (TableLayout) findViewById(R.id.layout_visit);
 
         ////// Get Visits From Server
         HttpConnector VisitConnector = new HttpConnector();
-        VisitConnector.ConnectServer("", "/visit/" + String.valueOf(user_data.UserRsid), "GET");
+        VisitConnector.ConnectServer("", "/visit", "GET");
 
         String httpCode = VisitConnector.HttpResCode;
         String httpResult = VisitConnector.HttpResult;

@@ -2,10 +2,7 @@ package com.nobell.owner.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,16 +10,6 @@ import android.widget.Toast;
 
 import com.nobell.owner.R;
 import com.nobell.owner.model.HttpConnector;
-import com.nobell.owner.model.UserData;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -81,25 +68,18 @@ public class SignupActivity extends AppCompatActivity {
 
                 // if Success To Register.
                 if (httpCode.equals("200")) {
-                    Toast.makeText(SignupActivity.this, "Success to Register", Toast.LENGTH_SHORT).show();
-
-                    Intent intent;
-                    intent = new Intent(SignupActivity.this, MainActivity.class); // (현재 액티비티, 이동할 액티비티)
-
-                    // Moving Activity -> Main
+                    Toast.makeText(SignupActivity.this, "Success to SignUp", Toast.LENGTH_SHORT).show();
                     finish();
-                    startActivity(intent);
                 }
                 // if Fail To Register.
                 else {
                     if (httpCode.equals("409")) {
-                        Toast.makeText(SignupActivity.this, "Fail to Register : Exist Member", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignupActivity.this, "Fail to SignUp : Exist Member", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(SignupActivity.this, "Fail to Register : ERROR IN SERVER", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignupActivity.this, "Fail to SignUp : ERROR IN SERVER", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         });
-        // End of Register
     }
 }

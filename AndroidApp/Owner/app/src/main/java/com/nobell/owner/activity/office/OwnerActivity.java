@@ -14,7 +14,7 @@ import com.nobell.owner.R;
 import com.nobell.owner.activity.MainActivity;
 import com.nobell.owner.activity.OfficeActivity;
 import com.nobell.owner.model.HttpConnector;
-import com.nobell.owner.model.UserData;
+import com.nobell.owner.model.OwnerData;
 
 public class OwnerActivity extends AppCompatActivity {
 
@@ -27,8 +27,6 @@ public class OwnerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_owner);
 
-        final UserData user_data = MainActivity.user_data;
-
         // Get View Object
         owner_name = (TextView) findViewById(R.id.owner_name);
         owner_email = (TextView) findViewById(R.id.owner_email);
@@ -39,9 +37,9 @@ public class OwnerActivity extends AppCompatActivity {
 
         btn_confirm = (Button) findViewById(R.id.btn_owner);
 
-        owner_name.setText(user_data.UserName);
-        owner_email.setText(user_data.UserEmail);
-        owner_phone.setText(user_data.UserPhone);
+        owner_name.setText(OwnerData.OwnerName);
+        owner_email.setText(OwnerData.OwnerEmail);
+        owner_phone.setText(OwnerData.OwnerPhone);
 
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,34 +62,23 @@ public class OwnerActivity extends AppCompatActivity {
 
                 // Request Edit Owner to Server
                 HttpConnector OwnerConnector = new HttpConnector();
-                String param = "owner_email=" + user_data.UserEmail + "&owner_pw=" + input_pwd + "&owner_pin=" + input_pin + "";
-                String result_owner = OwnerConnector.ConnectServer(param, "/info", "POST");
+                String param = "new_pw=" + input_pwd + "&new_pin=" + input_pin + "";
+                OwnerConnector.ConnectServer(param, "/info", "POST");
 
                 String httpCode = OwnerConnector.HttpResCode;
 
                 if(httpCode.equals("200")){
-                    user_data.UserPwd = input_pwd;
-                    user_data.UserPin = input_pin;
-                    returnToBack();
+                    Toast.makeText(OwnerActivity.this, "개인 정보 수정 완료", Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(OwnerActivity.this, OfficeActivity.class);
+                    finish();
+                    startActivity(intent);
                 }
                 else {
+                    Toast.makeText(OwnerActivity.this, "개인 정보 수정 실패 : " + httpCode, Toast.LENGTH_SHORT).show();
                     return;
                 }
             }
         });
-    }
-
-    // Back to OfficeActivity
-    @Override
-    public void onBackPressed() {
-        returnToBack();
-    }
-
-    public void returnToBack() {
-        Intent intent;
-        intent = new Intent(OwnerActivity.this, OfficeActivity.class); // (현재 액티비티, 이동할 액티비티)
-
-        finish();
-        startActivity(intent);
     }
 }

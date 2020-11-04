@@ -18,7 +18,7 @@ import com.nobell.owner.activity.office.restaurant.EditTableActivity;
 import com.nobell.owner.activity.office.restaurant.PlusTableActivity;
 import com.nobell.owner.activity.office.restaurant.TableActivity;
 import com.nobell.owner.model.HttpConnector;
-import com.nobell.owner.model.UserData;
+import com.nobell.owner.model.OwnerData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,7 +28,6 @@ public class ManageTableActivity extends AppCompatActivity {
 
     private TextView tv_titleTable;
     private TableLayout layout_tables;
-    private UserData user_data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +36,6 @@ public class ManageTableActivity extends AppCompatActivity {
 
         tv_titleTable = (TextView) findViewById(R.id.tv_titleTable);
         layout_tables = (TableLayout) findViewById(R.id.layout_tableManager);
-        user_data = MainActivity.user_data;
 
         TableRow.LayoutParams params = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
         params.weight = 1;
@@ -46,7 +44,7 @@ public class ManageTableActivity extends AppCompatActivity {
         // 1. get Datas.
         // Connect Web Server to Read Menus. : GET
         HttpConnector TableConnector = new HttpConnector();
-        String json_table = TableConnector.ConnectServer("", "/table/" + String.valueOf(user_data.UserRsid), "GET");
+        String json_table = TableConnector.ConnectServer("", "/table", "GET");
 
         String httpCode = TableConnector.HttpResCode;
         if (httpCode.equals("200")) {

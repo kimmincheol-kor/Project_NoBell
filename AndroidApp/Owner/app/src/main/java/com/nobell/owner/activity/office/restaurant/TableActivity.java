@@ -14,11 +14,12 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nobell.owner.R;
 import com.nobell.owner.activity.MainActivity;
 import com.nobell.owner.model.HttpConnector;
-import com.nobell.owner.model.UserData;
+import com.nobell.owner.model.OwnerData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,7 +28,6 @@ import org.json.JSONObject;
 public class TableActivity extends AppCompatActivity {
 
     private TableLayout layout_tables;
-    private UserData user_data;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -36,7 +36,6 @@ public class TableActivity extends AppCompatActivity {
         setContentView(R.layout.activity_table);
 
         layout_tables = (TableLayout) findViewById(R.id.layout_table);
-        user_data = MainActivity.user_data;
 
         TableRow.LayoutParams params = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
         params.weight = 1;
@@ -45,9 +44,10 @@ public class TableActivity extends AppCompatActivity {
         // 1. get Datas.
         // Connect Web Server to Read Menus. : GET
         HttpConnector TableConnector = new HttpConnector();
-        String json_table = TableConnector.ConnectServer("", "/table/" + String.valueOf(user_data.UserRsid), "GET");
+        String json_table = TableConnector.ConnectServer("", "/table", "GET");
 
         String httpCode = TableConnector.HttpResCode;
+
         if (httpCode.equals("200")) {
             int cnt = 0;
             try {
@@ -92,8 +92,6 @@ public class TableActivity extends AppCompatActivity {
                             table_no = jsonTable.getInt("table_no");
                             table_x = jsonTable.getInt("table_position_x");
                             table_y = jsonTable.getInt("table_position_y");
-
-                            Log.e("table : ", table_no+"");
                         }
                         // If Empty Table
                         else {
@@ -104,7 +102,6 @@ public class TableActivity extends AppCompatActivity {
                                     Button selectTable = (Button) view;
 
                                     String position = selectTable.getHint().toString();
-                                    Log.e("BLAH", position);
                                     int idx = position.indexOf(',');
                                     int position_x = Integer.parseInt(position.substring(0, idx));
                                     int position_y = Integer.parseInt(position.substring(idx+1, position.length()));
@@ -136,7 +133,6 @@ public class TableActivity extends AppCompatActivity {
                     rs_table.setGravity(Gravity.CENTER);
                     rs_table.setHeight(20);
                     rs_table.setHint((j+1) + "," + (i+1));
-                    Log.e("BLAH", (i+1) + "," + (j+1));
 
                     // If Empty Table
                     if (true) {
@@ -147,7 +143,6 @@ public class TableActivity extends AppCompatActivity {
                                 Button selectTable = (Button) view;
 
                                 String position = selectTable.getHint().toString();
-                                Log.e("BLAH", position);
                                 int idx = position.indexOf(',');
                                 int position_x = Integer.parseInt(position.substring(0, idx));
                                 int position_y = Integer.parseInt(position.substring(idx+1, position.length()));
@@ -182,9 +177,17 @@ public class TableActivity extends AppCompatActivity {
 
                 // Send to Server : Menu Data
                 // Connect Web Server to Insert Menu Data.
-                HttpConnector MenuConnector = new HttpConnector();
-                String param = "rs_id=" + user_data.UserRsid + "&table_no=" + new_no + "&table_x=" + position_x + "&table_y=" + position_y + "&table_headcount=" + new_people + "&operation=create" + "";
-                String result_menu = MenuConnector.ConnectServer(param, "/table/", "POST");
+                HttpConnector TableConnector = new HttpConnector();
+                String param = "table_no=" + new_no + "&table_x=" + position_x + "&table_y=" + position_y + "&table_headcount=" + new_people + "";
+                TableConnector.ConnectServer(param, "/table", "POST");
+
+                String httpCode = TableConnector.HttpResCode;
+                if (httpCode.equals("200")) {
+                    Toast.makeText(TableActivity.this, "성공", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(TableActivity.this, "실패", Toast.LENGTH_SHORT).show();
+                }
 
                 recreate();
             }
@@ -200,9 +203,17 @@ public class TableActivity extends AppCompatActivity {
 
                 // Send to Server : Menu Data
                 // Connect Web Server to Insert Menu Data.
-                HttpConnector MenuConnector = new HttpConnector();
-                String param = "rs_id=" + user_data.UserRsid + "&table_no=" + new_no + "&table_headcount=" + new_people + "&operation=update" + "";
-                String result_menu = MenuConnector.ConnectServer(param, "/table/", "POST");
+                HttpConnector TableConnector = new HttpConnector();
+                String param = "table_no=" + new_no + "&table_headcount=" + new_people + "";
+                TableConnector.ConnectServer(param, "/table/", "PUT");
+
+                String httpCode = TableConnector.HttpResCode;
+                if (httpCode.equals("200")) {
+                    Toast.makeText(TableActivity.this, "성공", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(TableActivity.this, "실패", Toast.LENGTH_SHORT).show();
+                }
 
                 recreate();
             }
@@ -213,9 +224,17 @@ public class TableActivity extends AppCompatActivity {
                 String new_no = data.getStringExtra("table_no");
 
                 // Connect Web Server to Insert Menu Data.
-                HttpConnector MenuConnector = new HttpConnector();
-                String param = "rs_id=" + user_data.UserRsid + "&table_no=" + new_no + "&operation=delete" + "";
-                String result_menu = MenuConnector.ConnectServer(param, "/table/", "POST");
+                HttpConnector TableConnector = new HttpConnector();
+                String param = "table_no=" + new_no + "";
+                TableConnector.ConnectServer(param, "/table/", "DELETE");
+
+                String httpCode = TableConnector.HttpResCode;
+                if (httpCode.equals("200")) {
+                    Toast.makeText(TableActivity.this, "성공", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(TableActivity.this, "실패", Toast.LENGTH_SHORT).show();
+                }
 
                 recreate();
             }

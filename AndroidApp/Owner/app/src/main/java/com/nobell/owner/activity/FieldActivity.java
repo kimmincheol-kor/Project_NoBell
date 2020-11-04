@@ -4,28 +4,23 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nobell.owner.R;
 import com.nobell.owner.activity.field.ManageTableActivity;
 import com.nobell.owner.activity.field.ReserveActivity;
 import com.nobell.owner.activity.field.ReserveListActivity;
 import com.nobell.owner.activity.field.VisitActivity;
-import com.nobell.owner.model.HttpConnector;
 import com.nobell.owner.model.RestaurantData;
-import com.nobell.owner.model.UserData;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.nobell.owner.model.OwnerData;
 
 public class FieldActivity extends AppCompatActivity {
 
-    public static UserData user_data;
-    public static RestaurantData rs_data;
+    int backButtonCount = 0;
 
     private TextView tv_restaurant_field;
     private Button btn_manageOrder, btn_manageTable, btn_visit, btn_reserve, btn_rsvList, btn_toOwner;
@@ -35,9 +30,6 @@ public class FieldActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_field);
-
-        user_data = MainActivity.user_data;
-        rs_data = MainActivity.rs_data;
 
         // Get View Object
         tv_restaurant_field = (TextView) findViewById(R.id.tv_restaurant_field);
@@ -49,34 +41,11 @@ public class FieldActivity extends AppCompatActivity {
         btn_toOwner = (Button) findViewById(R.id.btn_toOwner);
         et_pin = (EditText) findViewById(R.id.et_pin);
 
+        OwnerData.updateInfo();
+
         // Check exist Restaurant
-        if(user_data.UserRsid > 0) {
-            // Exist
-            Log.e("test", "2");
-
-            // Connect Web Server to Get Restaurant Data.
-            HttpConnector FieldConnector = new HttpConnector();
-            String param = "rs_id=" + user_data.UserRsid + "";
-            String httpResult = FieldConnector.ConnectServer(param, "/restaurant/"+String.valueOf(user_data.UserRsid), "GET");
-            String httpCode = FieldConnector.HttpResCode;
-
-            // Parsing JSON
-            try {
-                JSONObject json_user = new JSONObject(httpResult);
-
-                rs_data.rs_id = user_data.UserRsid;
-                rs_data.name = json_user.getString("rs_name").toString().trim();
-                rs_data.phone = json_user.getString("rs_phone").toString().trim();
-                rs_data.address = json_user.getString("rs_address").toString().trim();
-                rs_data.intro = json_user.getString("rs_intro").toString().trim();
-                rs_data.open = json_user.getString("rs_open").toString().trim();
-                rs_data.close = json_user.getString("rs_close").toString().trim();
-                rs_data.state = json_user.getInt("rs_state");
-
-                tv_restaurant_field.setText(rs_data.name);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        if(OwnerData.OwnerRsid > 0 && RestaurantData.rs_id > 0) {
+            tv_restaurant_field.setText(RestaurantData.name);
         }
 
         btn_manageOrder.setOnClickListener(new View.OnClickListener() {
@@ -121,21 +90,35 @@ public class FieldActivity extends AppCompatActivity {
         btn_toOwner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 String inputPin = et_pin.getText().toString();
 
-                if (inputPin.equals(user_data.UserPin)) {
-                    Intent intent = new Intent(FieldActivity.this, OfficeActivity.class); // (현재 액티비티, 이동할 액티비티)
+                if (inputPin.equals(OwnerData.OwnerPin)) {
+                    Toast.makeText(FieldActivity.this, "사장 모드 전환 성공", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(FieldActivity.this, OfficeActivity.class);
                     finish();
                     startActivity(intent);
                 }
                 else {
+                    Toast.makeText(FieldActivity.this, "핀 번호가 다릅니다.", Toast.LENGTH_SHORT).show();
                     return;
                 }
             }
         });
+    }
 
+    // Exit App Function by Press Back
+    @Override
+    public void onBackPressed() {
+        if (backButtonCount >= 1) {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-
+            finish();
+            startActivity(intent);
+        } else {
+            Toast.makeText(this, "한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
+            backButtonCount++;
+        }
     }
 }
