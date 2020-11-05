@@ -6,8 +6,8 @@ const mysqlAPI = require('../utils/mysqlAPI');
 
 /* ---------------------------------------------------- */
 
-router.get('/:id', (req, res) => {
-    const getAllVisitSql = `SELECT * FROM nobell.visit_tbl WHERE visit_rs_id=${req.params.id} ORDER BY visit_time`;
+router.get('/', (req, res) => {
+    const getAllVisitSql = `SELECT * FROM nobell.visit_tbl WHERE visit_rs_id=${req.user.owner_rs_id} ORDER BY visit_time`;
 
     (async (sql) => {
         try {

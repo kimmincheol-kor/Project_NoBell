@@ -6,8 +6,8 @@ const mysqlAPI = require('../utils/mysqlAPI');
 
 /* ---------------------------------------------------- */
 
-router.get('/:id', (req, res) => {
-    const getAllReserveSql = `SELECT * FROM nobell.reservation_tbl WHERE rsv_rs_id=${req.params.id} ORDER BY rsv_time`;
+router.get('/', (req, res) => {
+    const getAllReserveSql = `SELECT * FROM nobell.reservation_tbl WHERE rsv_rs_id=${req.user.owner_rs_id} ORDER BY rsv_time`;
 
     (async (sql) => {
         try {
@@ -54,8 +54,8 @@ router.post('/reject', (req, res) => {
 
 ////////// ACCEPTED RESERVATION
 
-router.get('/accepted/:id', (req, res) => {
-    const getAllaReserveSql = `SELECT * FROM nobell.accept_rsv_tbl WHERE arsv_rs_id=${req.params.id} ORDER BY arsv_target`;
+router.get('/accepted', (req, res) => {
+    const getAllaReserveSql = `SELECT * FROM nobell.accept_rsv_tbl WHERE arsv_rs_id=${req.user.owner_rs_id} ORDER BY arsv_target`;
 
     (async (sql) => {
         try {

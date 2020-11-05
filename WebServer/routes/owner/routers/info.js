@@ -9,13 +9,17 @@ const mysqlAPI = require('../utils/mysqlAPI');
 // Edit Owner Information Request
 router.post('/', (req, res, next) => {
     const editOwnerSql = `UPDATE nobell.owner_tbl 
-                            SET owner_pw="${req.body.owner_pw}", owner_pin="${req.body.owner_pin}" 
-                            WHERE owner_email="${req.body.owner_email}"`;
+                            SET owner_pw="${req.body.new_pw}", owner_pin="${req.body.new_pin}" 
+                            WHERE owner_email="${req.user.owner_email}"`;
 
     (async (sql) => {
         try {
-            const rows = await mysqlAPI(sql);
-            res.status(200).send(rows[0]);
+            await mysqlAPI(sql);
+
+            req.user.owner_pw = req.body.new_pw;
+            req.user.owner_pin = req.body.new_pin;
+
+            res.status(200).send();
         } catch (err) {
             res.status(err).send();
         }

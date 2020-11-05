@@ -15,7 +15,12 @@ const reserveRouter = require('./routers/reserve');
 
 /* ---------------------------------------------------- */
 
-// SignUp Request
+// Get User Data
+router.get('/', (req, res) => {
+    if(req.user === undefined) res.status(404).send();
+    else res.status(200).send(req.user);
+});
+
 router.post('/signup', (req, res, next) => {
     const signupSql = `INSERT 
                         INTO nobell.owner_tbl(owner_email, owner_pw, owner_name, owner_phone, owner_pin) 
@@ -24,25 +29,24 @@ router.post('/signup', (req, res, next) => {
     (async (sql) => {
         try {
             const rows = await mysqlAPI(sql);
-            res.status(200).send(rows[0]);
+            res.status(200).send();
         } catch (err) {
             res.status(err).send();
         }
     })(signupSql)
 });
 
-// Signin Request
 router.post('/signin', (req, res) => {
     // Login By Passport
     passport.authenticate('local', (err, user, info) => {
-        if (err) res.status(500).send(err);
+        if (err) res.status(500).send();
         else if (user) {
             req.logIn(user, (err) => {
-                if (err) res.status(500).send(err);
-                else res.status(200).send(user);
+                if (err) res.status(500).send();
+                else res.status(200).send();
             });
         }
-        else if (info) res.status(404).send(info.message);
+        else if (info) res.status(404).send(`${info.message}`);
     })(req, res);
 });
 
