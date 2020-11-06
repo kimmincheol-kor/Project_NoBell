@@ -2,7 +2,7 @@
 const router = require('express').Router();
 
 // Import internal Modules
-const mysqlAPI = require('./utils/mysqlAPI');
+const mysqlAPI = require('../../mysql');
 const passport = require('../../passport');
 
 // Import Owner's Routers

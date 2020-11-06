@@ -1,7 +1,7 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const kakaoStrategy = require('passport-kakao').Strategy;
-const mysqlAPI = require('../routes/owner/utils/mysqlAPI');
+const mysqlAPI = require('../mysql');
 
 passport.serializeUser((user, done) => {
     console.log("serialize");
