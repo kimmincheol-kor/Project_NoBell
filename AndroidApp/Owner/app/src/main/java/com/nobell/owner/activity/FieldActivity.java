@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.nobell.owner.R;
 import com.nobell.owner.activity.field.ManageTableActivity;
+import com.nobell.owner.activity.field.OrderActivity;
 import com.nobell.owner.activity.field.ReserveActivity;
 import com.nobell.owner.activity.field.ReserveListActivity;
 import com.nobell.owner.activity.field.VisitActivity;
@@ -51,7 +52,8 @@ public class FieldActivity extends AppCompatActivity {
         btn_manageOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(FieldActivity.this, OrderActivity.class);
+                startActivity(intent);
             }
         });
 

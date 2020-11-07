@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.field.OrderActivity">
+
+    <TableLayout
+        android:id="@+id/layout_order"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginBottom="20dp"
+            android:textSize="50dp"
+            android:text="주문 관리"/>
+
+        <TableRow>
+            <TextView
+                android:layout_weight="1"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:textSize="18dp"
+                android:text="테이블"
+                />
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:textSize="18dp"
+                android:text="시간"
+                />
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:textSize="18dp"
+                android:text="주문서"
+                />
+
+            <Button
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:background="@color/colorWhite"
+                android:clickable="false"
+                android:text="처리"
+                />
+        </TableRow>
+
+
+
+
+    </TableLayout>
+
+</LinearLayout>
