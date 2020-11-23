@@ -28,11 +28,17 @@ router.post('/confirm', (req, res) => {
             const setTableSql = `UPDATE nobell.table_tbl
                                     SET table_state=1, table_customer="${rows1[0].visit_customer}", table_time=NOW(), table_headCount=${rows1[0].visit_headcount}
                                     WHERE  table_rs_id=${rows1[0].visit_rs_id} AND table_no=${rows1[0].visit_table} AND table_state=0
-                                    `
+                                    `;
             await mysqlAPI(setTableSql);
+
+            const setUserSql = `UPDATE nobell.customer_tbl
+                                    SET customer_state=2
+                                    WHERE customer_email="${rows1[0].visit_customer}"
+                                    `;
+            await mysqlAPI(setUserSql);
                 
-            const delVisitSql = `DELETE FROM nobell.visit_tbl WHERE visit_id=${req.body.visit_id}`
-            await mysqlAPI(delVisitSql)
+            const delVisitSql = `DELETE FROM nobell.visit_tbl WHERE visit_id=${req.body.visit_id}`;
+            await mysqlAPI(delVisitSql);
             
             res.status(200).send(rows1);
         } catch (err) {
@@ -50,7 +56,7 @@ router.post('/reject', (req, res) => {
         } catch(err) {
             res.status(err).send();
         }
-    })(delVisitSql); 
+    })(delVisitSql);
 });
 
 module.exports = router;
