@@ -15,7 +15,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.field.ManageTableActivity"></activity>
+        <activity android:name=".activity.field.HandleTableActivity"
+                  android:theme="@style/MyAppTheme"/>
+        <activity
+            android:name=".activity.field.CheckOrderActivity"
+            android:theme="@style/MyAppTheme" />
+        <activity android:name=".activity.field.OrderActivity" />
+        <activity android:name=".activity.field.ManageTableActivity" />
         <activity android:name=".activity.field.ReserveListActivity" />
         <activity android:name=".activity.field.ReserveActivity" />
         <activity android:name=".activity.field.VisitActivity" />

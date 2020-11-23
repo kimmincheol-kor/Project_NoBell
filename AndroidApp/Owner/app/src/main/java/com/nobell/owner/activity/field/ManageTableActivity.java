@@ -2,6 +2,7 @@ package com.nobell.owner.activity.field;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +27,7 @@ import org.json.JSONObject;
 
 public class ManageTableActivity extends AppCompatActivity {
 
+    public static Activity mta;
     private TextView tv_titleTable;
     private TableLayout layout_tables;
 
@@ -33,6 +35,8 @@ public class ManageTableActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_table);
+
+        mta = ManageTableActivity.this;
 
         tv_titleTable = (TextView) findViewById(R.id.tv_titleTable);
         layout_tables = (TableLayout) findViewById(R.id.layout_tableManager);
@@ -75,16 +79,9 @@ public class ManageTableActivity extends AppCompatActivity {
                             Log.e("TABLE", table_no+"-"+table_state+"");
                             if (table_state == 0) {
                                 rs_table.setBackgroundColor(getResources().getColor(R.color.colorSkyBlue));
-                                rs_table.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        Button selectTable = (Button) view;
-                                        String no = selectTable.getText().toString();
-
-                                    }
-                                });
+                                rs_table.setClickable(false);
                             }
-                            else if(table_state == 1) {
+                            else if(table_state == 1) { // 여태 주문 내역 + 빈 테이블로 이동
                                 rs_table.setBackgroundColor(getResources().getColor(R.color.colorRed));
                                 rs_table.setOnClickListener(new View.OnClickListener() {
                                     @Override
@@ -92,10 +89,15 @@ public class ManageTableActivity extends AppCompatActivity {
                                         Button selectTable = (Button) view;
                                         String no = selectTable.getText().toString();
 
+                                        Intent intent = new Intent(ManageTableActivity.this, HandleTableActivity.class);
+                                        intent.putExtra("table", no);
+                                        intent.putExtra("state", 1);
+
+                                        startActivity(intent);
                                     }
                                 });
                             }
-                            else if(table_state == 2) {
+                            else if(table_state == 2) { // 여태 주문 내역 + 계산 처리
                                 rs_table.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                                 rs_table.setOnClickListener(new View.OnClickListener() {
                                     @Override
@@ -103,6 +105,11 @@ public class ManageTableActivity extends AppCompatActivity {
                                         Button selectTable = (Button) view;
                                         String no = selectTable.getText().toString();
 
+                                        Intent intent = new Intent(ManageTableActivity.this, HandleTableActivity.class);
+                                        intent.putExtra("table", no);
+                                        intent.putExtra("state", 2);
+
+                                        startActivity(intent);
                                     }
                                 });
                             }
