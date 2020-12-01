@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.nobell.owner.R;
 import com.nobell.owner.activity.office.OwnerActivity;
 import com.nobell.owner.activity.office.RestaurantActivity;
+import com.nobell.owner.activity.office.ReviewActivity;
 import com.nobell.owner.model.HttpConnector;
 import com.nobell.owner.model.RestaurantData;
 import com.nobell.owner.model.OwnerData;
@@ -131,7 +132,7 @@ public class OfficeActivity extends AppCompatActivity {
         btn_review.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(OfficeActivity.this, OwnerActivity.class); // (현재 액티비티, 이동할 액티비티)
+                Intent intent = new Intent(OfficeActivity.this, ReviewActivity.class); // (현재 액티비티, 이동할 액티비티)
                 startActivity(intent);
             }
         });
