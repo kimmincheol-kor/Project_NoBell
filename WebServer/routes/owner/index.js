@@ -14,6 +14,7 @@ const visitRouter = require('./routers/visit');
 const reserveRouter = require('./routers/reserve');
 const orderRouter = require('./routers/order');
 const reviewRouter = require('./routers/review');
+const statRouter = require('./routers/stat');
 
 /* ---------------------------------------------------- */
 
@@ -61,5 +62,6 @@ router.use('/visit', visitRouter); reserveRouter
 router.use('/reserve', reserveRouter);
 router.use('/order', orderRouter);
 router.use('/review', reviewRouter);
+router.use('/stat', statRouter);
 
 module.exports = router;

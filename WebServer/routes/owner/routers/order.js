@@ -82,9 +82,11 @@ router.post('/pay', async (req, res) => {
         ////////////////////////
         const rows = await conn.query(getTableSql);
         const tblTime = new Date(rows[0][0].table_time);
+        const curTime = new Date();
+        const rotate = new Date(curTime - tblTime);
         
-        const addHistorySql = `INSERT INTO nobell.history_tbl(history_rs_id, history_table, history_customer, history_headcount, history_total, history_time) 
-                                                        VALUES (${req.user.owner_rs_id}, ${req.body.table}, "${rows[0][0].table_customer}", ${rows[0][0].table_headCount}, ${req.body.total}, ${tblTime.getHours()})`;
+        const addHistorySql = `INSERT INTO nobell.history_tbl(history_rs_id, history_table, history_customer, history_headcount, history_total, history_time, history_rotate) 
+                                                        VALUES (${req.user.owner_rs_id}, ${req.body.table}, "${rows[0][0].table_customer}", ${rows[0][0].table_headCount}, ${req.body.total}, ${tblTime.getHours()}, ${parseInt(rotate.getTime()/1000)})`;
         const outUserSql = `UPDATE nobell.customer_tbl SET customer_state=0 WHERE customer_email="${rows[0][0].table_customer}"`;
 
         await conn.query(outTableSql);
