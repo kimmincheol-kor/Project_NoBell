@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="200dp"
+    android:paddingBottom="200dp"
+    tools:context=".activity.office.StatActivity">
+
+    <!-- -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <!-- -->
+
+        <LinearLayout
+            android:id="@+id/layout_age"
+            android:background="@drawable/boarder"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="연령별 통계"
+                android:textSize="20dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="10dp"
+                android:gravity="center"
+                android:text="최다 방문 연령대"/>
+
+            <TextView
+                android:id="@+id/stat_age"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:gravity="center"
+                android:text="None"
+                android:textSize="40dp"/>
+
+        </LinearLayout>
+
+        <!-- -->
+
+        <LinearLayout
+            android:id="@+id/layout_time"
+            android:background="@drawable/boarder"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:text="시간별 통계"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="10dp"
+                android:gravity="center"
+                android:text="최다 방문 시간대"/>
+
+            <TextView
+                android:id="@+id/stat_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:gravity="center"
+                android:text="None"
+                android:textSize="40dp" />
+
+        </LinearLayout>
+
+        <!-- -->
+
+    </LinearLayout>
+
+    <!-- -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <!-- -->
+
+        <LinearLayout
+            android:id="@+id/layout_rotate"
+            android:background="@drawable/boarder"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:text="회전율"/>
+
+            <TextView
+                android:id="@+id/stat_rotate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:gravity="center"
+                android:text="None"
+                android:textSize="40dp" />
+
+        </LinearLayout>
+
+        <!-- -->
+
+        <LinearLayout
+            android:id="@+id/layout_again"
+            android:background="@drawable/boarder"
+            android:layout_height="match_parent"
+            android:layout_width="10dp"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:text="재방문율"/>
+
+            <TextView
+                android:id="@+id/stat_again"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:gravity="center"
+                android:text="None"
+                android:textSize="40dp"/>
+
+        </LinearLayout>
+
+        <!-- -->
+
+    </LinearLayout>
+
+
+</LinearLayout>

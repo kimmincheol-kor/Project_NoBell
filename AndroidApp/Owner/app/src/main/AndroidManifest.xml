@@ -15,7 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.office.AnswerActivity"
+        <activity android:name=".activity.office.DetailActivity"></activity>
+        <activity android:name=".activity.office.StatActivity" />
+        <activity
+            android:name=".activity.office.AnswerActivity"
             android:theme="@style/MyAppTheme" />
         <activity android:name=".activity.office.ReviewActivity" />
         <activity
